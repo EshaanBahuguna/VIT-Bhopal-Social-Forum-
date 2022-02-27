@@ -505,6 +505,22 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-top: 5rem;
 }
 
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.mt-3 {
+  margin-top: 0.75rem;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.mr-1 {
+  margin-right: 0.25rem;
+}
+
 .flex {
   display: flex;
 }
@@ -521,8 +537,16 @@ Ensure the default browser behavior of the `hidden` attribute.
   height: 15rem;
 }
 
+.h-1 {
+  height: 0.25rem;
+}
+
 .w-60 {
   width: 15rem;
+}
+
+.w-1 {
+  width: 0.25rem;
 }
 
 .max-w-5xl {
@@ -533,8 +557,20 @@ Ensure the default browser behavior of the `hidden` attribute.
   max-width: 80rem;
 }
 
+.list-inside {
+  list-style-position: inside;
+}
+
+.list-disc {
+  list-style-type: disc;
+}
+
 .grid-cols-4 {
   grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .flex-row {
@@ -555,6 +591,18 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .gap-5 {
   gap: 1.25rem;
+}
+
+.divide-y > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-y-reverse: 0;
+  border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
+  border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
+}
+
+.divide-y-2 > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-y-reverse: 0;
+  border-top-width: calc(2px * calc(1 - var(--tw-divide-y-reverse)));
+  border-bottom-width: calc(2px * var(--tw-divide-y-reverse));
 }
 
 .rounded-full {
@@ -580,8 +628,34 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding: 1rem;
 }
 
+.p-3 {
+  padding: 0.75rem;
+}
+
+.p-2 {
+  padding: 0.5rem;
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
 .pt-2 {
   padding-top: 0.5rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-justify {
+  text-align: justify;
 }
 
 .text-3xl {
@@ -600,9 +674,19 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .card{
   background: white;
-  padding: 10px;
+  padding: 1rem;
   border-radius: 0.375rem;
   box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+h1{
+  font-weight: 700;
+  font-size: 2.25rem;
+}
+
+h3{
+  font-weight: 700;
+  font-size: 1.75rem;
 }
 
 .hover\:cursor-pointer:hover {
