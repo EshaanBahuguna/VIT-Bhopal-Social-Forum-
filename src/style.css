@@ -16,3 +16,7 @@ h3{
   font-weight: 700;
   font-size: 1.75rem;
 }
+main{
+  max-width: 1700px;
+  margin: 5rem auto;
+}
