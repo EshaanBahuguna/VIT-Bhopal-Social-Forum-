@@ -28,117 +28,142 @@
   </nav>
 
   <main class="grid grid-cols-5 gap-5">
-    <!-- Name and profile picture section  -->
-    <section id="user-picture" class="col-start-1 col-end-2 flex flex-col items-center">
-      <img src="./images/Resume Photo.jpg" alt="image could not be loaded" class="rounded-full border-x border-white h-60 w-60 ">
-      <h1 class="mt-5">Eshaan Bahuguna</h1>
-    </section>
-    
-    <!-- Description and Hobbies section  -->
-    <section class="card col-start-1 col-end-2">
-      <div id="about-me" class= "divide-y-2 px-2">
+    <div class="col-start-1 col-end-2">
+      <!-- Name and profile picture section  -->
+      <section id="user-picture" class=" flex flex-col items-center">
+        <img src="./images/Resume Photo.jpg" alt="image could not be loaded" class="rounded-full border-x border-white h-60 w-60 ">
+        <h1 class="mt-5">Eshaan Bahuguna</h1>
+      </section>
+      
+      <!-- Description and Hobbies section  -->
+      <section class="card mt-6">
+        <div id="about-me" class= "divide-y-2 px-2">
+          <div>
+            <h3>About Me</h3>
+            <p class="mt-4 text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit, nulla sint facere vel laboriosam doloremque, architecto fugiat odio quibusdam laudantium ea amet, maiores voluptate voluptates assumenda obcaecati voluptatibus beatae natus!</p>
+          </div>
+          <div class="mt-3">
+            <!-- Any 4 hobbies -->
+            <h3 class="mt-3">Hobbies</h3>
+            <ul class="mt-2 grid grid-cols-2 text-center">
+              <li class="p-2"><i class="fas fa-angle-right mr-1"></i>Dancing</li>
+              <li class="p-2"><i class="fas fa-angle-right mr-1"></i>Swimming</li>
+              <li class="p-2"><i class="fas fa-angle-right mr-1"></i>Calisthenics</li>
+              <li class="p-2"><i class="fas fa-angle-right mr-1"></i>Gaming</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="col-start-2 col-end-5">
+      <!-- Section to make Posts -->
+      <section id="make-post" class="px-20">
+        <div class="card p-3">
+          <h3>Write Post</h3>
+          <form action="" method="post" class="divide-y border-2 rounded mt-3">
+            <div class="pl-2">
+              <input type="text" name="title" id="title" placeholder="Title" class="mb-2 pl-1" style="width: 100%">
+              <textarea name="body" id="body" placeholder="Write a description..." style="width: 100%; min-height: 5rem; resize: none" class="pl-1"></textarea>
+              <input type="hidden" name="userName" value="Eshaan Bahuguna">
+            </div>
+            <div class="mt-3 p-2">
+              <button type="submit" class="primary-button">Post</button>
+            </div>
+          </form>
+        </div>
+      </section>
+  
+      <!-- Section where Posts of other Users are displayed -->
+      <section id="posts" class="col-start-2 col-end-5 px-20 mt-6">
         <div>
-          <h3>About Me</h3>
-          <p class="mt-4 text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit, nulla sint facere vel laboriosam doloremque, architecto fugiat odio quibusdam laudantium ea amet, maiores voluptate voluptates assumenda obcaecati voluptatibus beatae natus!</p>
-        </div>
-        <div class="mt-3">
-          <!-- Any 4 hobbies -->
-          <h3 class="mt-3">Hobbies</h3>
-          <ul class="mt-2 grid grid-cols-2 text-center">
-            <li class="p-2"><i class="fas fa-angle-right mr-1"></i>Dancing</li>
-            <li class="p-2"><i class="fas fa-angle-right mr-1"></i>Swimming</li>
-            <li class="p-2"><i class="fas fa-angle-right mr-1"></i>Calisthenics</li>
-            <li class="p-2"><i class="fas fa-angle-right mr-1"></i>Gaming</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- Section to make Posts -->
-    <section id="make-post" class="col-start-2 col-end-5 row-start-1 px-20">
-      <div class="card p-3">
-        <h3>Write Post</h3>
-        <form action="" method="post" class="divide-y border-2 rounded mt-3">
-          <div class="pl-2">
-            <input type="text" name="title" id="title" placeholder="Title" class="mb-2 pl-1 focus:border-green-400" style="width: 100%">
-            <textarea name="body" id="body" placeholder="Write a description..." style="width: 100%; min-height: 5rem; resize: none" class="pl-1"></textarea>
-            <input type="hidden" name="userName" value="Eshaan Bahuguna">
+          <h3 class="pl-2">POSTS</h3>
+          <div class="overflow-auto">
+            <div class="card p-3 mt-3">
+              <p class="post-title">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore eveniet facilis sequi alias consequuntur praesentium exercitationem quasi libero necessitatibus reiciendis?</p>
+              <p class="post-body mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae nam doloribus quia necessitatibus voluptatum qui enim, dicta porro soluta placeat voluptas nemo omnis numquam quidem nesciunt possimus. Neque, nulla provident?</p>
+            </div>
+            <div class="card p-3 mt-3">
+              <p class="post-title">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore eveniet facilis sequi alias consequuntur praesentium exercitationem quasi libero necessitatibus reiciendis?</p>
+              <p class="post-body mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae nam doloribus quia necessitatibus voluptatum qui enim, dicta porro soluta placeat voluptas nemo omnis numquam quidem nesciunt possimus. Neque, nulla provident?</p>
+            </div>
+            <div class="card p-3 mt-3">
+              <p class="post-title">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore eveniet facilis sequi alias consequuntur praesentium exercitationem quasi libero necessitatibus reiciendis?</p>
+              <p class="post-body mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae nam doloribus quia necessitatibus voluptatum qui enim, dicta porro soluta placeat voluptas nemo omnis numquam quidem nesciunt possimus. Neque, nulla provident?</p>
+            </div>
           </div>
-          <div class="mt-3 p-2">
-            <button type="submit" class="primary-button">Post</button>
+        </div>
+      </section>
+    </div>
+
+    <div class="col-start-5 col-end-6">
+      <!-- Skills section -->
+      <!-- TOP 5 Skills -->
+      <section id="skills" class=" card">
+        <h3 class="mb-3 text-center">Skills</h3>
+        <div class="mb-3">
+        <p class="font-bold mb-2">HTML/CSS</p>
+          <div class="bg-slate-50 h-3 rounded">
+            <div style="width: 100%; height: 100%" class="bg-yellow-200 rounded"></div>
           </div>
-        </form>
-      </div>
-    </section>
-
-    <!-- Section where Posts of other Users are displayed -->
-    <section id="posts" class="col-start-2 col-end-5 px-20 ">
-      <div class="card">
-        <h3>POSTS</h3>
-        
-      </div>
-    </section>
-
-    <!-- Skills section -->
-    <!-- TOP 5 Skills -->
-    <section id="skills" class="col-start-5 col-end-6 card row-start-1">
-      <h3 class="mb-3 text-center">Skills</h3>
-      <div class="mb-3">
-      <p class="font-bold mb-2">HTML/CSS</p>
-        <div class="bg-slate-50 h-3 rounded">
-          <div style="width: 100%; height: 100%" class="bg-yellow-200 rounded"></div>
         </div>
-      </div>
-      <div class="mb-3">
-      <p class="font-bold mb-2">JAVASCRIPT</p>
-        <div class="bg-slate-50 h-3 rounded">
-          <div style="width: 85%; height: 100%" class="bg-yellow-200 rounded"></div>
+        <div class="mb-3">
+        <p class="font-bold mb-2">JAVASCRIPT</p>
+          <div class="bg-slate-50 h-3 rounded">
+            <div style="width: 85%; height: 100%" class="bg-yellow-200 rounded"></div>
+          </div>
         </div>
-      </div>
-      <div class="mb-3">
-      <p class="font-bold mb-2">MongoDB</p>
-        <div class="bg-slate-50 h-3 rounded">
-          <div style="width: 75%; height: 100%" class="bg-yellow-200 rounded"></div>
+        <div class="mb-3">
+        <p class="font-bold mb-2">MongoDB</p>
+          <div class="bg-slate-50 h-3 rounded">
+            <div style="width: 75%; height: 100%" class="bg-yellow-200 rounded"></div>
+          </div>
         </div>
-      </div>
-      <div>
-      <p class="font-bold mb-2">Node.js + MONGOOSE</p>
-        <div class="bg-slate-50 h-3 rounded">
-          <div style="width: 80%; height: 100%" class="bg-yellow-200 rounded"></div>
+        <div class="mb-3">
+        <p class="font-bold mb-2">Node.js + MONGOOSE</p>
+          <div class="bg-slate-50 h-3 rounded">
+            <div style="width: 80%; height: 100%" class="bg-yellow-200 rounded"></div>
+          </div>
         </div>
-      </div>
-      <div>
-    </section>
-
-    <!-- Events section -->
-    <!-- Upcoming 5-6 events only -->
-    <section id="events" class="col-start-5 col-end-6 card row-start-2">
-      <h3 class="text-center mb-3">Events</h3>
-      <div class="mb-2">
-        <p class="font-semibold">5th Feb:</p>
-        <p>Programming in Java Exam</p>
-      </div>
-      <div class="mb-2">
-        <p class="font-semibold">7th Feb:</p>
-        <p>PLA Exam</p>
-      </div>
-      <div class="mb-2">
-        <p class="font-semibold">10th Feb:</p>
-        <p>Web Security Exam</p>
-      </div>
-      <div class="mb-2">
-        <p class="font-semibold">11th Feb:</p>
-        <p>Cloud Security Exam</p>
-      </div>
-      <div class="mb-2">
-        <p class="font-semibold">11th Feb:</p>
-        <p>Applied Linear Algebra Exam</p>
-      </div>
-      <div>
-        <p class="font-semibold">13th Feb:</p>
-        <p>Advanced Cyber Security Nascomm Exam</p>
-      </div>
-    </section>
+        <div class="mb-3">
+        <p class="font-bold mb-2">C++</p>
+          <div class="bg-slate-50 h-3 rounded">
+            <div style="width: 95%; height: 100%" class="bg-yellow-200 rounded"></div>
+          </div>
+        </div>
+        <div>
+      </section>
+  
+      <!-- Events section -->
+      <!-- Upcoming 5-6 events only -->
+      <section id="events" class="card mt-6">
+        <h3 class="text-center mb-3">Events</h3>
+        <div class="mb-2">
+          <p class="font-semibold">5th Feb:</p>
+          <p>Programming in Java Exam</p>
+        </div>
+        <div class="mb-2">
+          <p class="font-semibold">7th Feb:</p>
+          <p>PLA Exam</p>
+        </div>
+        <div class="mb-2">
+          <p class="font-semibold">10th Feb:</p>
+          <p>Web Security Exam</p>
+        </div>
+        <div class="mb-2">
+          <p class="font-semibold">11th Feb:</p>
+          <p>Cloud Security Exam</p>
+        </div>
+        <div class="mb-2">
+          <p class="font-semibold">11th Feb:</p>
+          <p>Applied Linear Algebra Exam</p>
+        </div>
+        <div>
+          <p class="font-semibold">13th Feb:</p>
+          <p>Advanced Cyber Security Nascomm Exam</p>
+        </div>
+      </section>
+    </div>
   </main>
 </body>
 </html>
