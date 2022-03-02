@@ -11,8 +11,8 @@
 .primary-button{
   color: white;
   background-color: rgb(109 40 217);
-  border-radius: 0.25rem;
-  padding: 10px;
+  border-radius: 15px;
+  padding: 9px;
   text-align: center;
   font-weight: 500;
   min-width: 5.5rem;
@@ -38,6 +38,11 @@ button{
 main{
   max-width: 1700px;
   margin: 5rem auto;
+}
+#make-post .card{
+  padding-right: 2rem;
+  padding-left: 2rem;
+
 }
 #make-post form input{
   display: block;
