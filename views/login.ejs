@@ -1,17 +1,25 @@
 <%- include("./partials/header"); -%>
   <!-- Login page -->
-  <main class="card mx-auto max-w-lg">
-    <form action="" method="post" class="flex-col justify-center items-center" style="width:100%">
-      <div>
-        <label for="user-email">Email</label>
-        <input type="email" id="user-email">
+
+  <main id="login-page" class="mt-80 font-mono">
+    <form action="" method="post" class="card mx-auto max-w-xl">
+      <div class="p-3">
+        <h1 class="text-center">Welcome</h1>
+        <div class="mt-3">
+          <label for="user-email" class="mb-2">Email</label>
+          <input type="email" id="user-email" placeholder="Enter email id... " class="rounded w-full p-2">
+        </div>
+        <div class="mt-4 mb-6">
+          <label for="user-password" class="mb-2"> Password</label>
+          <input type="password" id="user-password" placeholder="Enter password..." class="rounded w-full p-2">
+        </div>
+        <div class="flex flex-col mb-5">
+          <button type="submit" class="primary-button mb-3">Log-In</button>
+          <p class="text-center mb-3">OR</p>
+          <a href="/register" class="secondary-button">Sign-Up</a>
+        </div>
+        <a class="hover:text-violet-400 relative w-full cursor-pointer" style="left: 74%">Forgot Password</a>
       </div>
-      <div>
-        <label for="user-password">Password</label>
-        <input type="password" id="user-password">
-      </div>
-      <input type="submit" value="Log-In" class="primary-button">
-      <a href="">Forgot Password?</a>
     </form>
   </main>
 

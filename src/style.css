@@ -23,6 +23,17 @@
   background: #6d28d9;
   transition: 0.25s;
 }
+.secondary-button{
+  color: white;
+  background: #2a2a2a;
+  border: 2px solid #833eef;
+  text-align: center;
+  padding: 9px; 
+  border-radius: 10px;
+}
+.secondary-button:hover{
+  color: rgb(167 139 250) ;
+}
 .post-title{
   font-size: 1.2rem;
   font-weight: 700;
@@ -55,7 +66,7 @@ nav ul li:hover{
   padding: 0.5rem 0.5rem;
   border-radius: 10px;
 }
-main{
+#home-page{
   max-width: 1700px;
   margin: 5rem auto;
 }
@@ -75,5 +86,22 @@ form textarea::placeholder{
   font-weight: 100;
 }
 #make-post textarea:focus, #make-post input:focus{
+  outline: none;
+}
+
+
+/* LOGIN Page */
+#login-page input, #login-page label{
+  display: block;
+}
+#login-page label{
+  font-size: 1.5rem;
+
+}
+#login-page input{
+  background: #2a2a2a;
+  border: 2px solid #833eef;
+}
+#login-page input:focus{
   outline: none;
 }

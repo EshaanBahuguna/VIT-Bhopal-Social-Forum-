@@ -12,7 +12,10 @@ app.get('/home', (req, res)=>{
 app.get('/login', (req, res)=>{
   res.render('login');
 })
-
+app.get('/register', (req, res)=>{
+  res.render('register');
+  console.log('Register commit recieved!');
+})
 app.listen('3000', ()=>{
   console.log('The server is running on port 3000');
 })
