@@ -468,6 +468,14 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-backdrop-sepia:  ;
 }
 
+.absolute {
+  position: absolute;
+}
+
+.relative {
+  position: relative;
+}
+
 .col-start-1 {
   grid-column-start: 1;
 }
@@ -501,6 +509,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-top: 1.75rem;
 }
 
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
 .mt-5 {
   margin-top: 1.25rem;
 }
@@ -529,16 +541,16 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-bottom: 0.75rem;
 }
 
-.mb-2 {
-  margin-bottom: 0.5rem;
-}
-
 .mr-3 {
   margin-right: 0.75rem;
 }
 
 .ml-1 {
   margin-left: 0.25rem;
+}
+
+.block {
+  display: block;
 }
 
 .flex {
@@ -559,6 +571,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .h-3 {
   height: 0.75rem;
+}
+
+.w-16 {
+  width: 4rem;
 }
 
 .w-60 {
@@ -673,6 +689,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding-top: 0.5rem;
 }
 
+.pt-3 {
+  padding-top: 0.75rem;
+}
+
 .pl-2 {
   padding-left: 0.5rem;
 }
@@ -721,9 +741,18 @@ Ensure the default browser behavior of the `hidden` attribute.
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+.text-violet-400 {
+  --tw-text-opacity: 1;
+  color: rgb(167 139 250 / var(--tw-text-opacity));
+}
+
 .no-underline {
   -webkit-text-decoration-line: none;
           text-decoration-line: none;
+}
+
+.decoration-0 {
+  text-decoration-thickness: 0px;
 }
 
 /* Utility Classes */
@@ -778,8 +807,17 @@ button{
 
 nav ul li:hover{
   transition: 0.25s;
-  color: #833eef;
-  border-bottom: 3px solid #833eef;
+  color: #a16df3;
+  border-bottom: 3px solid #a16df3;
+}
+
+#user-icon:hover > div{
+  display: block;
+  top: 3.2rem;
+  left: -0.5rem;
+  background: #2a2a2a;
+  padding: 0.5rem 0.5rem;
+  border-radius: 10px;
 }
 
 main{
@@ -828,6 +866,15 @@ form textarea::placeholder{
 
 .hover\:cursor-pointer:hover {
   cursor: pointer;
+}
+
+.hover\:text-inherit:hover {
+  color: inherit;
+}
+
+.hover\:text-violet-400:hover {
+  --tw-text-opacity: 1;
+  color: rgb(167 139 250 / var(--tw-text-opacity));
 }
 
 .hover\:underline:hover {
