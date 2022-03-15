@@ -561,12 +561,12 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-bottom: 1.5rem;
 }
 
-.mb-5 {
-  margin-bottom: 1.25rem;
-}
-
 .block {
   display: block;
+}
+
+.inline-block {
+  display: inline-block;
 }
 
 .flex {
@@ -605,12 +605,8 @@ Ensure the default browser behavior of the `hidden` attribute.
   max-width: 64rem;
 }
 
-.max-w-2xl {
-  max-width: 42rem;
-}
-
-.max-w-xl {
-  max-width: 36rem;
+.max-w-lg {
+  max-width: 32rem;
 }
 
 .cursor-pointer {
@@ -667,6 +663,15 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .rounded {
   border-radius: 0.25rem;
+}
+
+.border-2 {
+  border-width: 2px;
+}
+
+.border-violet-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(139 92 246 / var(--tw-border-opacity));
 }
 
 .bg-slate-700 {
@@ -915,16 +920,16 @@ form textarea::placeholder{
   display: block;
 }
 
-#login-page label{
+#login-page label, #register-page label{
   font-size: 1.5rem;
 }
 
-#login-page input{
+#login-page input, #register-page input{
   background: #2a2a2a;
-  border: 2px solid #833eef;
+  /* border: 2px solid #833eef; */
 }
 
-#login-page input:focus{
+#login-page input:focus, #register-page input:focus{
   outline: none;
 }
 
@@ -939,6 +944,11 @@ form textarea::placeholder{
 .hover\:text-violet-400:hover {
   --tw-text-opacity: 1;
   color: rgb(167 139 250 / var(--tw-text-opacity));
+}
+
+.hover\:text-violet-500:hover {
+  --tw-text-opacity: 1;
+  color: rgb(139 92 246 / var(--tw-text-opacity));
 }
 
 .hover\:underline:hover {

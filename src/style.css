@@ -94,14 +94,13 @@ form textarea::placeholder{
 #login-page input, #login-page label{
   display: block;
 }
-#login-page label{
+#login-page label, #register-page label{
   font-size: 1.5rem;
-
 }
-#login-page input{
+#login-page input, #register-page input{
   background: #2a2a2a;
-  border: 2px solid #833eef;
+  /* border: 2px solid #833eef; */
 }
-#login-page input:focus{
+#login-page input:focus, #register-page input:focus{
   outline: none;
 }
