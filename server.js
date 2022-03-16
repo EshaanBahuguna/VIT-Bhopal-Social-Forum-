@@ -14,8 +14,12 @@ app.get('/login', (req, res)=>{
 })
 app.get('/register', (req, res)=>{
   res.render('register');
-  console.log('Register commit recieved!');
+  // console.log('Register commit recieved!');
 })
+app.get('/events', (req, res)=>{
+  res.render('events');
+})
+
 app.listen('3000', ()=>{
   console.log('The server is running on port 3000');
 })
