@@ -52,6 +52,7 @@ h3{
 button{
   display: inline-block;
 }
+
 /* Navbar */
 nav ul li:hover{
   transition: 0.25s;
@@ -70,6 +71,7 @@ nav ul li:hover{
   max-width: 1700px;
   margin: 5rem auto;
 }
+
 /* Make POST */
 #make-post .card{
   padding-right: 2rem;
@@ -104,3 +106,16 @@ form textarea::placeholder{
 #login-page input:focus, #register-page input:focus{
   outline: none;
 }
+
+/* EVENTS Page */
+#holidays-section > div > div:nth-child(3){
+  padding-left: 2rem;
+}
+#horizontal-bar{
+  height: 0.15rem;
+}
+/* .primary-text{
+  background: linear-gradient(360deg, #6366f1, #a855f7, #ec4899);
+  background-clip: text;
+  color: transparent;
+} */

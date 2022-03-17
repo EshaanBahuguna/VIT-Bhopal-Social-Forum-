@@ -557,6 +557,18 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-bottom: 1.5rem;
 }
 
+.mt-20 {
+  margin-top: 5rem;
+}
+
+.mb-5 {
+  margin-bottom: 1.25rem;
+}
+
+.mb-8 {
+  margin-bottom: 2rem;
+}
+
 .mt-7 {
   margin-top: 1.75rem;
 }
@@ -605,6 +617,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   max-width: 32rem;
 }
 
+.max-w-7xl {
+  max-width: 80rem;
+}
+
 .max-w-5xl {
   max-width: 64rem;
 }
@@ -623,6 +639,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .grid-cols-2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .flex-row {
@@ -718,6 +738,11 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding-right: 5rem;
 }
 
+.px-6 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
 .pl-2 {
   padding-left: 0.5rem;
 }
@@ -758,6 +783,16 @@ Ensure the default browser behavior of the `hidden` attribute.
 .text-base {
   font-size: 1rem;
   line-height: 1.5rem;
+}
+
+.text-5xl {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
 }
 
 .text-3xl {
@@ -932,6 +967,22 @@ form textarea::placeholder{
 #login-page input:focus, #register-page input:focus{
   outline: none;
 }
+
+/* EVENTS Page */
+
+#holidays-section > div > div:nth-child(3){
+  padding-left: 2rem;
+}
+
+#horizontal-bar{
+  height: 0.15rem;
+}
+
+/* .primary-text{
+  background: linear-gradient(360deg, #6366f1, #a855f7, #ec4899);
+  background-clip: text;
+  color: transparent;
+} */
 
 .hover\:cursor-pointer:hover {
   cursor: pointer;
