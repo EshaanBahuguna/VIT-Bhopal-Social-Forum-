@@ -55,7 +55,7 @@ const User = mongoose.model('User', userSchema);
 app.get('/', (req, res)=> {
   res.redirect('/login');
 })
-app.get('/home', (req, res)=>{
+app.get('/:username/home', (req, res)=>{
   res.render('home');
 })
 app.get('/login', (req, res)=>{
@@ -113,19 +113,30 @@ app.post('/register', (req, res)=> {
   }
 })
 app.post('/login', (req, res)=>{
-  console.log(req.body);
   const userEmail = req.body.userEmail, 
         userPassword = req.body.userPassword;
   
   //Check if account exists or not
   User.findOne({"loginInfo.email":  userEmail}, (err, foundUser)=>{
     if(!err){
-      console.log(foundUser);
       if(foundUser != null){
         const hash = foundUser.loginInfo.password;
         bcrypt.compare(userPassword, hash, (err, result)=>{
           if(result == true){
-            res.redirect('/home');
+            let username = '';
+            for(let i = 0;  i < userEmail.length; i++){
+              if(userEmail[i] === '@'){
+                break;
+              }
+              else if(userEmail[i] === '.'){
+                username += '-';
+              }
+              else{
+                username += userEmail[i];
+              }
+            }
+            console.log(username);
+            res.redirect(`/${username}/home`);
           }
           else{
             res.render('login', {message: 'Password do not match', status: 'red'});
