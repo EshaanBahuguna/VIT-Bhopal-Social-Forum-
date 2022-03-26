@@ -113,30 +113,30 @@ app.post('/register', (req, res)=> {
   }
 })
 app.post('/login', (req, res)=>{
-  // console.log(req.body);
-  // const userEmail = req.body.userEmail, 
-  //       userPassword = req.body.userPassword;
+  console.log(req.body);
+  const userEmail = req.body.userEmail, 
+        userPassword = req.body.userPassword;
   
-  // //Check if account exists or not
-  // User.findOne({email: userEmail}, (err, foundUser)=>{
-  //   if(!err){
-  //     console.log(foundUser);
-  //     if(foundUser != null){
-  //       const hash = foundUser.loginInfo.password;
-  //       bcrypt.compare(userPassword, hash, (err, result)=>{
-  //         if(result == true){
-  //           res.redirect('/home');
-  //         }
-  //         else{
-  //           res.render('login', {message: 'Password do not match', status: 'red'});
-  //         }
-  //       })
-  //     }
-  //     else{
-  //       res.render('login', {message: 'No such account exists', status: 'red'})
-  //     }
-  //   }
-  // })
+  //Check if account exists or not
+  User.findOne({"loginInfo.email":  userEmail}, (err, foundUser)=>{
+    if(!err){
+      console.log(foundUser);
+      if(foundUser != null){
+        const hash = foundUser.loginInfo.password;
+        bcrypt.compare(userPassword, hash, (err, result)=>{
+          if(result == true){
+            res.redirect('/home');
+          }
+          else{
+            res.render('login', {message: 'Password do not match', status: 'red'});
+          }
+        })
+      }
+      else{
+        res.render('login', {message: 'No such account exists', status: 'red'})
+      }
+    }
+  })
 })
 
 
