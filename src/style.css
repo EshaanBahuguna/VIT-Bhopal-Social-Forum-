@@ -107,6 +107,9 @@ form textarea::placeholder{
   outline: none;
 }
 
+/* REGISTER Page */
+
+
 /* EVENTS Page */
 #holidays-section > div > div:nth-child(3){
   padding-left: 2rem;
