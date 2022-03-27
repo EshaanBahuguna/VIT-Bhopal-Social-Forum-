@@ -88,22 +88,32 @@ app.post('/register', (req, res)=> {
 
   //Storing the email and password in the database
   if(validEmail == true && validPassword == true){
-    //Hashing the password
-    bcrypt.hash(userPassword, saltRounds, (err, hash)=>{
+    // Checking if email is already registered 
+    User.findOne({"loginInfo.email": userEmail}, (err, foundUser)=>{
       if(!err){
-        const newUser = new User({
-          loginInfo: {
-            email: userEmail, 
-            password: hash
-          }
-        })
-        newUser.save();
-      }
-      else{
-        console.log(err);
+        if(foundUser === null){
+          //Hashing the password
+          bcrypt.hash(userPassword, saltRounds, (err, hash)=>{
+            if(!err){
+              const newUser = new User({
+                loginInfo: {
+                  email: userEmail, 
+                  password: hash
+                }
+              })
+              newUser.save();
+            }
+            else{
+              console.log(err);
+            }
+          })
+          res.render('login', {message: 'Account successfully registered', status: 'green'});
+        }
+        else{
+          res.render('register', {reason: 'Email already registered'});
+        }
       }
     })
-    res.render('login', {message: 'Account successfully registered', status: 'green'});
   }
   else if(validPassword == false){
     res.render('register', {reason: 'Password do not match'});
