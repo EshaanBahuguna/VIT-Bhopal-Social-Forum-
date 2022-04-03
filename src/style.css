@@ -52,6 +52,9 @@ h3{
 button{
   display: inline-block;
 }
+body{
+  position: relative;
+}
 
 /* Navbar */
 nav ul li:hover{
@@ -91,6 +94,34 @@ form textarea::placeholder{
   outline: none;
 }
 
+/* User-Profile section */
+#user-profile{
+  padding: 3rem;
+  position: absolute; 
+  top: 15rem; 
+  left: 45rem;
+}
+#user-profile-wrapper{
+  content: '';
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%; 
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(8px);
+}
+#user-profile > *{
+  z-index: 1;
+}
+#user-profile input{
+  background: #2a2a2a
+}
+#user-profile i{
+  position: relative; 
+  left: 36rem; 
+  bottom: 1.5rem;
+}
 
 /* LOGIN Page */
 #login-page input, #login-page label{
@@ -106,9 +137,6 @@ form textarea::placeholder{
 #login-page input:focus, #register-page input:focus{
   outline: none;
 }
-
-/* REGISTER Page */
-
 
 /* EVENTS Page */
 #holidays-section > div > div:nth-child(3){

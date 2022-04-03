@@ -63,7 +63,6 @@ app.get('/login', (req, res)=>{
 })
 app.get('/register', (req, res)=>{
   res.render('register', {reason: null});
-  // console.log('Register commit recieved!');
 })
 app.get('/events', (req, res)=>{
   res.render('events');
@@ -109,15 +108,18 @@ app.post('/register', (req, res)=> {
           })
           res.render('login', {message: 'Account successfully registered', status: 'green'});
         }
+        // When entered email id is already registered 
         else{
           res.render('register', {reason: 'Email already registered'});
         }
       }
     })
   }
+  // When entered password is incorrect 
   else if(validPassword == false){
     res.render('register', {reason: 'Password do not match'});
   }
+  // When entered email id is incorrect 
   else if(validEmail == false){
     res.render('register', {reason: 'Email is incorrect'});
   }
@@ -153,13 +155,18 @@ app.post('/login', (req, res)=>{
           }
         })
       }
+      // When no account with the entered email id exists 
       else{
         res.render('login', {message: 'No such account exists', status: 'red'})
       }
     }
   })
 })
-
+// app.post('/home', (req, res)=> {
+//   console.log('Request Recieved!');
+//   console.log(req.body);
+//   res.status(200).send('Request was successfully recieved! :D');
+// })
 
 app.listen('3000', ()=>{
   console.log('The server is running on port 3000');

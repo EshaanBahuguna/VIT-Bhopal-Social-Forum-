@@ -549,6 +549,14 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-bottom: 0.75rem;
 }
 
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.ml-5 {
+  margin-left: 1.25rem;
+}
+
 .mt-80 {
   margin-top: 20rem;
 }
@@ -605,20 +613,28 @@ Ensure the default browser behavior of the `hidden` attribute.
   width: 15rem;
 }
 
+.w-9\/12 {
+  width: 75%;
+}
+
 .w-full {
   width: 100%;
+}
+
+.w-80 {
+  width: 20rem;
 }
 
 .w-20 {
   width: 5rem;
 }
 
-.max-w-lg {
-  max-width: 32rem;
-}
-
 .max-w-7xl {
   max-width: 80rem;
+}
+
+.max-w-lg {
+  max-width: 32rem;
 }
 
 .max-w-5xl {
@@ -665,6 +681,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   gap: 1.25rem;
 }
 
+.gap-10 {
+  gap: 2.5rem;
+}
+
 .divide-y-2 > :not([hidden]) ~ :not([hidden]) {
   --tw-divide-y-reverse: 0;
   border-top-width: calc(2px * calc(1 - var(--tw-divide-y-reverse)));
@@ -687,6 +707,11 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .border-2 {
   border-width: 2px;
+}
+
+.border-gray-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(107 114 128 / var(--tw-border-opacity));
 }
 
 .border-violet-500 {
@@ -759,6 +784,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding-left: 0px;
 }
 
+.pr-20 {
+  padding-right: 5rem;
+}
+
 .pt-3 {
   padding-top: 0.75rem;
 }
@@ -783,6 +812,16 @@ Ensure the default browser behavior of the `hidden` attribute.
 .text-base {
   font-size: 1rem;
   line-height: 1.5rem;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
 }
 
 .text-5xl {
@@ -812,6 +851,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   font-weight: 800;
 }
 
+.italic {
+  font-style: italic;
+}
+
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
@@ -822,9 +865,24 @@ Ensure the default browser behavior of the `hidden` attribute.
   color: rgb(167 139 250 / var(--tw-text-opacity));
 }
 
+.text-zinc-400 {
+  --tw-text-opacity: 1;
+  color: rgb(161 161 170 / var(--tw-text-opacity));
+}
+
+.text-violet-500 {
+  --tw-text-opacity: 1;
+  color: rgb(139 92 246 / var(--tw-text-opacity));
+}
+
 .text-red-500 {
   --tw-text-opacity: 1;
   color: rgb(239 68 68 / var(--tw-text-opacity));
+}
+
+.underline {
+  -webkit-text-decoration-line: underline;
+          text-decoration-line: underline;
 }
 
 .no-underline {
@@ -834,6 +892,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .decoration-0 {
   text-decoration-thickness: 0px;
+}
+
+.underline-offset-4 {
+  text-underline-offset: 4px;
 }
 
 /* Utility Classes */
@@ -897,6 +959,10 @@ button{
   display: inline-block;
 }
 
+body{
+  position: relative;
+}
+
 /* Navbar */
 
 nav ul li:hover{
@@ -958,6 +1024,41 @@ form textarea::placeholder{
   outline: none;
 }
 
+/* User-Profile section */
+
+#user-profile{
+  padding: 3rem;
+  position: absolute;
+  top: 15rem;
+  left: 45rem;
+}
+
+#user-profile-wrapper{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  -webkit-backdrop-filter: blur(8px);
+          backdrop-filter: blur(8px);
+}
+
+#user-profile > *{
+  z-index: 1;
+}
+
+#user-profile input{
+  background: #2a2a2a
+}
+
+#user-profile i{
+  position: relative;
+  left: 36rem;
+  bottom: 1.5rem;
+}
+
 /* LOGIN Page */
 
 #login-page input, #login-page label{
@@ -976,8 +1077,6 @@ form textarea::placeholder{
 #login-page input:focus, #register-page input:focus{
   outline: none;
 }
-
-/* REGISTER Page */
 
 /* EVENTS Page */
 
@@ -1016,4 +1115,14 @@ form textarea::placeholder{
 .hover\:underline:hover {
   -webkit-text-decoration-line: underline;
           text-decoration-line: underline;
+}
+
+.focus\:border-violet-500:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(139 92 246 / var(--tw-border-opacity));
+}
+
+.focus\:outline-none:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
 }
