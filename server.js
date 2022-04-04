@@ -63,10 +63,10 @@ app.get('/:username/home', (req, res)=>{
   res.render('home');
 })
 app.get('/login', (req, res)=>{
-  res.render('login', {message: null, status: null});
+  res.render('login', {message: null});
 })
 app.get('/register', (req, res)=>{
-  res.render('register', {reason: null});
+  res.render('register', {reason: null, status: null});
 })
 app.get('/events', (req, res)=>{
   res.render('events');
@@ -74,68 +74,46 @@ app.get('/events', (req, res)=>{
 
 // POSTS Requests
 app.post('/register', (req, res)=> {
+  console.log(req.body);
   const userEmail = req.body.userEmail, 
-        userPassword = req.body.userPassword, 
-        confirmPassword = req.body.confirmPassword;
-  
-  // Server side validation
-  const re = /@vitbhopal.ac.in$/
-  let validEmail = re.test(userEmail);
-  let validPassword;
-  if(userPassword === confirmPassword){
-    validPassword = true;
-  }
-  else{
-    validPassword = false;
-  }
+        userPassword = req.body.userPassword,
+        saltRounds = 10;
 
-  //Storing the email and password in the database
-  if(validEmail == true && validPassword == true){
-    // Checking if email is already registered 
-    User.findOne({"loginInfo.email": userEmail}, (err, foundUser)=>{
-      if(!err){
-        if(foundUser === null){
-          //Hashing the password
-          bcrypt.hash(userPassword, saltRounds, (err, hash)=>{
-            if(!err){
-              const newUser = new User({
-                loginInfo: {
-                  email: userEmail, 
-                  password: hash
+  // SERVER SIDE VALIDATION
+  // Checking if email is already registered 
+  User.findOne({"loginInfo.email": userEmail}, (err, foundUser)=>{
+    if(!err){
+      if(foundUser === null){
+        //Hashing the password
+        bcrypt.hash(userPassword, saltRounds, (err, hash)=>{
+          if(!err){
+            const newUser = new User({
+              loginInfo: {
+                email: userEmail, 
+                password: hash
+              }, 
+              userInfo: {
+                  name: {
+                  firstName: '---', 
+                  lastName: '---'
                 }, 
-                userInfo: {
-                    name: {
-                    firstName: '---', 
-                    lastName: '---'
-                  }, 
-                  description: '---', 
-                  hobbies: undefined, 
-                  skills: undefined
-                }
-              })
-              newUser.save();
-            }
-            else{
-              console.log(err);
-            }
-          })
-          res.redirect('login');
-        }
-        // When entered email id is already registered 
-        else{
-          res.render('register', {reason: 'Email already registered'});
-        }
+                description: '---', 
+              }
+            })
+            newUser.save();
+          }
+          else{
+            console.log(err);
+          }
+        })
+        res.status(200).send({message: 'Account successfully registered', color: 'green'});
       }
-    })
-  }
-  // When entered password is incorrect 
-  else if(validPassword == false){
-    res.render('register', {reason: 'Password do not match'});
-  }
-  // When entered email id is incorrect 
-  else if(validEmail == false){
-    res.render('register', {reason: 'Email is incorrect'});
-  }
+      // When entered email id is already registered 
+      else{
+        res.status(200).send({message: 'Email already registered', color: 'red'});
+      }
+    }
+  })
 })
 app.post('/login', (req, res)=>{
   const userEmail = req.body.userEmail, 

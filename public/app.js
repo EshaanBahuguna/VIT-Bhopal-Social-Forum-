@@ -111,8 +111,6 @@ function loadAllEvents(){
 
 
 
-
-
 // const postButton = document.querySelector('#make-post button[type="submit"]');
 // postButton.addEventListener('click', (event)=>{
 //   const title = document.querySelector('#title').value, 
