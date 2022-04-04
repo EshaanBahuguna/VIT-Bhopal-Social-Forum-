@@ -108,7 +108,7 @@ form textarea::placeholder{
   left: 0; 
   width: 100%; 
   height: 100%; 
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(8px);
 }
 #user-profile > *{
@@ -123,6 +123,31 @@ form textarea::placeholder{
   bottom: 1.5rem;
 }
 
+/* FOOTER section */
+#contact-section{
+  display: grid; 
+  grid-template-columns: 1fr 2fr;
+}
+#contact-section > div:first-child{
+  background-color: #000;
+}
+#contact-form input, #contact-form textarea{
+  display: block; 
+}
+#contact-form input{
+  width: 25rem;
+  margin-left: 13rem;
+  background: #131313;
+  border-bottom: 2px; 
+  border-bottom-color: violet;
+}
+#contact-form input:focus{
+  outline: none;
+}
+#contact-form textarea{
+  background: #2a2a2a;
+}
+
 /* LOGIN Page */
 #login-page input, #login-page label{
   display: block;
@@ -132,7 +157,6 @@ form textarea::placeholder{
 }
 #login-page input, #register-page input{
   background: #2a2a2a;
-  /* border: 2px solid #833eef; */
 }
 #login-page input:focus, #register-page input:focus{
   outline: none;
@@ -145,8 +169,4 @@ form textarea::placeholder{
 #horizontal-bar{
   height: 0.15rem;
 }
-/* .primary-text{
-  background: linear-gradient(360deg, #6366f1, #a855f7, #ec4899);
-  background-clip: text;
-  color: transparent;
-} */
+

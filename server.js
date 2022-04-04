@@ -1,14 +1,18 @@
+const { getUsername, getEmailId } = require('./functions');
+
 require('dotenv').config();
 const express = require('express'), 
       app = express(), 
       bodyParser = require('body-parser'), 
       mongoose = require('mongoose'), 
-      bcrypt = require('bcrypt');
+      bcrypt = require('bcrypt'), 
+      functions = require('./functions');
 const saltRounds = 10;
 
 app.set('view engine' , 'ejs');
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json(['application/json']));
 
 // Mongoose Connection to Atlas and Schema
 mongoose.connect(`mongodb+srv://${process.env.CLUSTER_USERNAME}:${process.env.CLUSTER_PASSWORD}@cluster0.ca3lk.mongodb.net/SocialForumVITBhopal?retryWrites=true&w=majority`);
@@ -98,6 +102,15 @@ app.post('/register', (req, res)=> {
                 loginInfo: {
                   email: userEmail, 
                   password: hash
+                }, 
+                userInfo: {
+                    name: {
+                    firstName: '---', 
+                    lastName: '---'
+                  }, 
+                  description: '---', 
+                  hobbies: undefined, 
+                  skills: undefined
                 }
               })
               newUser.save();
@@ -106,7 +119,7 @@ app.post('/register', (req, res)=> {
               console.log(err);
             }
           })
-          res.render('login', {message: 'Account successfully registered', status: 'green'});
+          res.redirect('login');
         }
         // When entered email id is already registered 
         else{
@@ -135,19 +148,8 @@ app.post('/login', (req, res)=>{
         const hash = foundUser.loginInfo.password;
         bcrypt.compare(userPassword, hash, (err, result)=>{
           if(result == true){
-            let username = '';
-            for(let i = 0;  i < userEmail.length; i++){
-              if(userEmail[i] === '@'){
-                break;
-              }
-              else if(userEmail[i] === '.'){
-                username += '-';
-              }
-              else{
-                username += userEmail[i];
-              }
-            }
-            console.log(username);
+            // Convert userEmail to username for url
+            username = functions.getUsername(userEmail);
             res.redirect(`/${username}/home`);
           }
           else{
@@ -162,11 +164,52 @@ app.post('/login', (req, res)=>{
     }
   })
 })
-// app.post('/home', (req, res)=> {
-//   console.log('Request Recieved!');
-//   console.log(req.body);
-//   res.status(200).send('Request was successfully recieved! :D');
-// })
+app.post('/:username/home/updateProfile', (req, res)=> {
+  const updateProfile = {
+    firstName: req.body.firstName, 
+    lastName: req.body.lastName, 
+    aboutMe: req.body.aboutMe,
+    hobbies: [], 
+    skills: req.body.skills
+  }
+  // Removing any extra whitespace from hobbies
+  req.body.hobbies.forEach((hobby)=>{
+    updateProfile.hobbies.push(String(hobby.trim()));
+  })
+
+  // Convert username from url into email id
+  const userEmail = functions.getEmailId(req.params.username);
+  // Update Name and Description fields
+  User.findOneAndUpdate({"loginInfo.email": userEmail}, {
+    $set: {
+      "userInfo.name.firstName": updateProfile.firstName, 
+      "userInfo.name.lastName": updateProfile.lastName, 
+      "userInfo.description": updateProfile.aboutMe
+    }
+  }, (err)=>{
+    if(!err){
+      console.log('Name and description successfully updated');
+    }
+  })
+  // Update Skills Field
+  updateProfile.skills.forEach((skill)=>{
+    User.findOneAndUpdate({"loginInfo.email": userEmail}, {$push: {"userInfo.skills": skill}}, (err)=>{
+      if(err){
+        console.log(err);
+      }
+    })
+  })
+  // Update Hobbies Field
+  updateProfile.hobbies.forEach((hobby)=>{
+    object = {
+      hobby: hobby
+    }
+    User.findOneAndUpdate({"loginInfo.email": userEmail}, {$push: {"userInfo.hobbies": object}}, (err)=>{
+      console.log(err);
+    })
+  })
+  res.status(200).send('Name, description, hobbies and skills are updated');
+})
 
 app.listen('3000', ()=>{
   console.log('The server is running on port 3000');

@@ -1,7 +1,7 @@
 module.exports = {
   content: [
-    './views/header.ejs', 
-    './views/footer.ejs', 
+    './views/partials/header.ejs', 
+    './views/partials/footer.ejs', 
     './views/partials/navbar.ejs',
     './views/home.ejs', 
     './views/login.ejs', 
