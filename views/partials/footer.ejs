@@ -1,28 +1,35 @@
 </body>
 <footer>
-  <section id="contact-section grid grid-cols-3">
-    <div class="col-span-1 col-end-2">
-      <i class="fas fa-phone-alt fa-2x block mb-4 mt-5"></i>
-      <ul class="mb-2">
-        <li class="mb-2">+91 7982-951-689</li>
-        <li class="mb-2">+91 9352-163-914</li>
-        <li class="mb-2">+91 6395-680-797</li>
-      </ul>
+  <section id="contact-section" class="font-mono" style="background: #2a2a2a">
+    <div class="flex flex-col pt-5">
+      <h1 class="text-center font-sans">For <i>Direct Queries</i>, reach out on</h1>
+      <div class="flex flex-row justify-between mb-3 pt-16 px-64">
+        <div class="flex flex-col items-center">
+          <i class="fas fa-mobile-alt fa-5x block mb-8 mt-3"></i>
+          <ul class="mb-2">
+            <li class="mb-2"><i class="fas fa-caret-right mr-3"></i>+91 7982-951-689</li>
+            <li class="mb-2"><i class="fas fa-caret-right mr-3"></i>+91 9352-163-914</li>
+            <li class="mb-2"><i class="fas fa-caret-right mr-3"></i>+91 6395-680-797</li>
+          </ul>
+        </div>
+        <div class="flex flex-col items-center">
+          <i class="fas fa-envelope fa-5x block mb-8 mt-3"></i>
+          <ul class="pl-4 mb-5">
+            <li class="mb-2"><i class="fas fa-caret-right mr-3"></i>eshaan.bahuguna2019@vitbhopal.ac.in</li>
+            <li class="mb-2"><i class="fas fa-caret-right mr-3"></i>asmi.bhardwaj2019@vitbhopal.ac.in</li>
+            <li class="mb-2"></li><i class="fas fa-caret-right mr-3"></i>parth.sarthi2019@vitbhopal.ac.in</li>
+          </ul>
+        </div>
+      </div>
+      <p class="text-center"><i class="fas fa-map-marker-alt"></i> Vellore Institute of Technology, Bhopal, Madhya Pradesh, India</p>
     </div>
-    <div class="col-span-2 col-end-3">
-      <i class="fas fa-envelope fa-2x block mb-4 mt-5"></i>
-      <ul class="pl-4 mb-5">
-        <li class="mb-2">eshaan.bahuguna2019@vitbhopal.ac.in</li>
-        <li class="mb-2">asmi.bhardwaj2019@vitbhopal.ac.in</li>
-        <li class="mb-2">parth.sarthi2019@vitbhopal.ac.in</li>
-      </ul>
-    </div>
-    <div id="contact-form" class="flex flex-col items-center col-span-3 col-end-4">
-      <h3 class="mb-5">Write your message to us</h3>
-      <form action="" method="post">
-        <input type="text" name="name" id="contact-name" placeholder="Name" class="mb-5 p-2 border-b-4 border-b-violet-500" autocomplete="off">
-        <input type="email" name="email" id="contact-email" placeholder="Email" class="mb-5 p-2" autocomplete="off">
-        <textarea name="message" id="contact-message" placeholder="Message" style="resize: none; width: 50rem; min-height: 8rem;" class="mt-6 p-2 rounded"></textarea>
+    <div id="contact-form" class="flex flex-col items-center pt-5">
+      <h1 class="mb-5 text-center font-sans">Write your <i>queries/feedback</i> to us</h1>
+      <form action="/contact" method="post" class="mt-6">
+        <input type="text" name="name" id="contact-name" placeholder="Name" class="mb-5 pb-3 pl-2 border-b-4 border-b-violet-500 w-80 mx-auto" autocomplete="off">
+        <input type="email" name="email" id="contact-email" placeholder="Email" class="mb-5 p-2 border-b-4 border-b-violet-500 w-80 mx-auto" autocomplete="off">
+        <textarea name="message" id="contact-message" placeholder="Message" style="resize: none; width: 30rem; min-height: 6rem;" class="my-6 p-2 rounded border-2 border-gray-500 focus:border-violet-500"></textarea>
+        <button class="font-mono secondary-button ml-40 mb-8">Submit</button>
       </form>
     </div>
   </section>

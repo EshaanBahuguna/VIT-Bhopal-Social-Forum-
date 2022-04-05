@@ -476,18 +476,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   position: relative;
 }
 
-.col-span-1 {
-  grid-column: span 1 / span 1;
-}
-
-.col-span-2 {
-  grid-column: span 2 / span 2;
-}
-
-.col-span-3 {
-  grid-column: span 3 / span 3;
-}
-
 .col-start-1 {
   grid-column-start: 1;
 }
@@ -504,14 +492,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   grid-column-end: 2;
 }
 
-.col-end-3 {
-  grid-column-end: 3;
-}
-
-.col-end-4 {
-  grid-column-end: 4;
-}
-
 .col-end-5 {
   grid-column-end: 5;
 }
@@ -525,16 +505,25 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-right: auto;
 }
 
+.my-6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
 .mb-4 {
   margin-bottom: 1rem;
 }
 
-.mt-5 {
-  margin-top: 1.25rem;
+.mt-7 {
+  margin-top: 1.75rem;
 }
 
 .mb-2 {
   margin-bottom: 0.5rem;
+}
+
+.mt-5 {
+  margin-top: 1.25rem;
 }
 
 .mb-5 {
@@ -545,8 +534,12 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-top: 1.5rem;
 }
 
-.mt-7 {
-  margin-top: 1.75rem;
+.ml-40 {
+  margin-left: 10rem;
+}
+
+.mb-8 {
+  margin-bottom: 2rem;
 }
 
 .mt-4 {
@@ -597,10 +590,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-top: 5rem;
 }
 
-.mb-8 {
-  margin-bottom: 2rem;
-}
-
 .block {
   display: block;
 }
@@ -629,6 +618,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   height: 0.75rem;
 }
 
+.w-80 {
+  width: 20rem;
+}
+
 .w-20 {
   width: 5rem;
 }
@@ -643,10 +636,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .w-full {
   width: 100%;
-}
-
-.w-80 {
-  width: 20rem;
 }
 
 .max-w-5xl {
@@ -669,16 +658,16 @@ Ensure the default browser behavior of the `hidden` attribute.
   resize: both;
 }
 
-.grid-cols-3 {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .grid-cols-5 {
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
-.grid-cols-2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .flex-row {
@@ -691,6 +680,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .items-center {
   align-items: center;
+}
+
+.justify-end {
+  justify-content: flex-end;
 }
 
 .justify-between {
@@ -782,6 +775,14 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding: 0.75rem;
 }
 
+.p-10 {
+  padding: 2.5rem;
+}
+
+.p-20 {
+  padding: 5rem;
+}
+
 .px-2 {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -797,8 +798,40 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding-right: 1.5rem;
 }
 
+.py-20 {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
+.px-32 {
+  padding-left: 8rem;
+  padding-right: 8rem;
+}
+
+.px-80 {
+  padding-left: 20rem;
+  padding-right: 20rem;
+}
+
+.px-64 {
+  padding-left: 16rem;
+  padding-right: 16rem;
+}
+
+.pt-5 {
+  padding-top: 1.25rem;
+}
+
 .pl-4 {
   padding-left: 1rem;
+}
+
+.pb-3 {
+  padding-bottom: 0.75rem;
+}
+
+.pl-2 {
+  padding-left: 0.5rem;
 }
 
 .pt-2 {
@@ -807,10 +840,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .pt-3 {
   padding-top: 0.75rem;
-}
-
-.pl-2 {
-  padding-left: 0.5rem;
 }
 
 .pl-1 {
@@ -825,6 +854,14 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding-right: 5rem;
 }
 
+.pt-20 {
+  padding-top: 5rem;
+}
+
+.pt-16 {
+  padding-top: 4rem;
+}
+
 .text-center {
   text-align: center;
 }
@@ -835,6 +872,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .font-mono {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.font-sans {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 .text-3xl {
@@ -957,16 +998,14 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 
 .secondary-button{
-  color: white;
+  color: #a370f5;
+  font-weight: bold;
   background: #2a2a2a;
-  border: 2px solid #833eef;
+  border: 2px solid #a370f5;
   text-align: center;
   padding: 9px;
   border-radius: 10px;
-}
-
-.secondary-button:hover{
-  color: rgb(167 139 250) ;
+  min-width: 10rem;
 }
 
 .post-title{
@@ -994,6 +1033,10 @@ button{
 
 body{
   position: relative;
+}
+
+input:focus, textarea:focus{
+  outline: none;
 }
 
 /* Navbar */
@@ -1053,10 +1096,6 @@ form textarea::placeholder{
   font-weight: 100;
 }
 
-#make-post textarea:focus, #make-post input:focus{
-  outline: none;
-}
-
 /* User-Profile section */
 
 #user-profile{
@@ -1096,31 +1135,11 @@ form textarea::placeholder{
 
 #contact-section{
   display: grid;
-  grid-template-columns: 1fr 2fr;
-}
-
-#contact-section > div:first-child{
-  background-color: #000;
+  grid-template-columns: 1.5fr 1fr;
 }
 
 #contact-form input, #contact-form textarea{
   display: block;
-}
-
-#contact-form input{
-  width: 25rem;
-  margin-left: 13rem;
-  background: #131313;
-  border-bottom: 2px;
-  border-bottom-color: violet;
-}
-
-#contact-form input:focus{
-  outline: none;
-}
-
-#contact-form textarea{
-  background: #2a2a2a;
 }
 
 /* LOGIN Page */
@@ -1133,12 +1152,8 @@ form textarea::placeholder{
   font-size: 1.5rem;
 }
 
-#login-page input, #register-page input{
+#login-page input, #register-page input, #contact-form input, #contact-form textarea{
   background: #2a2a2a;
-}
-
-#login-page input:focus, #register-page input:focus{
-  outline: none;
 }
 
 /* EVENTS Page */

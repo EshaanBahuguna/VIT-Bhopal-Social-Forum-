@@ -24,15 +24,14 @@
   transition: 0.25s;
 }
 .secondary-button{
-  color: white;
+  color: #a370f5;
+  font-weight: bold;
   background: #2a2a2a;
-  border: 2px solid #833eef;
+  border: 2px solid #a370f5;
   text-align: center;
   padding: 9px; 
   border-radius: 10px;
-}
-.secondary-button:hover{
-  color: rgb(167 139 250) ;
+  min-width: 10rem;
 }
 .post-title{
   font-size: 1.2rem;
@@ -54,6 +53,9 @@ button{
 }
 body{
   position: relative;
+}
+input:focus, textarea:focus{
+  outline: none;
 }
 
 /* Navbar */
@@ -90,9 +92,6 @@ nav ul li:hover{
 form textarea::placeholder{
   font-weight: 100;
 }
-#make-post textarea:focus, #make-post input:focus{
-  outline: none;
-}
 
 /* User-Profile section */
 #user-profile{
@@ -125,27 +124,11 @@ form textarea::placeholder{
 
 /* FOOTER section */
 #contact-section{
-  display: grid; 
-  grid-template-columns: 1fr 2fr;
-}
-#contact-section > div:first-child{
-  background-color: #000;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
 }
 #contact-form input, #contact-form textarea{
-  display: block; 
-}
-#contact-form input{
-  width: 25rem;
-  margin-left: 13rem;
-  background: #131313;
-  border-bottom: 2px; 
-  border-bottom-color: violet;
-}
-#contact-form input:focus{
-  outline: none;
-}
-#contact-form textarea{
-  background: #2a2a2a;
+  display: block;
 }
 
 /* LOGIN Page */
@@ -155,11 +138,8 @@ form textarea::placeholder{
 #login-page label, #register-page label{
   font-size: 1.5rem;
 }
-#login-page input, #register-page input{
+#login-page input, #register-page input, #contact-form input, #contact-form textarea{
   background: #2a2a2a;
-}
-#login-page input:focus, #register-page input:focus{
-  outline: none;
 }
 
 /* EVENTS Page */
