@@ -6,7 +6,7 @@
       <!-- Name and profile picture section  -->
       <section id="user-picture" class=" flex flex-col items-center">
         <img src="/images/Resume Photo.jpg" alt="image could not be loaded" class="rounded-full h-60 w-60 ">
-        <h1 class="mt-5 text-white">Eshaan Bahuguna</h1>
+        <h1 class="mt-5 text-white"><%=name.firstName %> <%= name.lastName%></h1>
       </section>
       
       <!-- Description and Hobbies section  -->
@@ -14,16 +14,13 @@
         <div id="about-me" class= "divide-y-2 px-2">
           <div>
             <h3 class="text-center">About Me</h3>
-            <p class="mt-4 text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit, nulla sint facere vel laboriosam doloremque, architecto fugiat odio quibusdam laudantium ea amet, maiores voluptate voluptates assumenda obcaecati voluptatibus beatae natus!</p>
+            <p class="mt-4 text-justify"><%= aboutMe %></p>
           </div>
           <div class="mt-3">
-            <!-- hobbies -->
+            <!-- hobbies section -->
             <h3 class="mt-3 text-center">Hobbies</h3>
             <ul class="mt-2 grid grid-cols-2 text-center">
-              <li class="p-2"><i class="fas fa-angle-right mr-1"></i>Dancing</li>
-              <li class="p-2"><i class="fas fa-angle-right mr-1"></i>Swimming</li>
-              <li class="p-2"><i class="fas fa-angle-right mr-1"></i>Calisthenics</li>
-              <li class="p-2"><i class="fas fa-angle-right mr-1"></i>Gaming</li>
+             <!-- hobbies will be entered here by JavaScript -->
             </ul>
           </div>
         </div>
@@ -87,6 +84,7 @@
               <li class="hover:text-violet-400 cursor-pointer"><i class="far fa-comment-alt"></i><span class="ml-1">5</span></li>
             </ul>
           </div>
+          <button class="secondary-button my-5 ml-80">Load More</button>
         </div>
       </section>
     </div>
@@ -95,37 +93,6 @@
       <!-- Skills section -->
       <section id="skills" class=" card">
         <h3 class="mb-3 text-center">Skills</h3>
-        <div class="mb-3">
-        <p class="font-bold mb-2">HTML/CSS</p>
-          <div class="bg-slate-700 h-3 rounded">
-            <div style="width: 100%; height: 100%" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded"></div>
-          </div>
-        </div>
-        <div class="mb-3">
-        <p class="font-bold mb-2">Javascript</p>
-          <div class="bg-slate-700 h-3 rounded">
-            <div style="width: 85%; height: 100%" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500  rounded"></div>
-          </div>
-        </div>
-        <div class="mb-3">
-        <p class="font-bold mb-2">MongoDB</p>
-          <div class="bg-slate-700 h-3 rounded">
-            <div style="width: 75%; height: 100%" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded"></div>
-          </div>
-        </div>
-        <div class="mb-3">
-        <p class="font-bold mb-2">Node.js + Mongoose</p>
-          <div class="bg-slate-700 h-3 rounded">
-            <div style="width: 80%; height: 100%" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded"></div>
-          </div>
-        </div>
-        <div class="mb-3">
-        <p class="font-bold mb-2">C++</p>
-          <div class="bg-slate-700 h-3 rounded">
-            <div style="width: 95%; height: 100%" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded"></div>
-          </div>
-        </div>
-        <div>
       </section>
   
       <!-- Events section -->
@@ -192,6 +159,9 @@
       </div>
       <button class="primary-button block mx-auto mt-5">Update Profile</button>
     </section>
+    <div class="hidden" id="user-id">
+      <%= userId %>
+    </div>
     <script src="/app.js"></script>
   </div>
 <%- include("./partials/footer"); -%>

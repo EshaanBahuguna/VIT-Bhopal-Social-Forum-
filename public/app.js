@@ -4,7 +4,13 @@ const userProfileButton = document.querySelector('#user-profile-button'),
       updateProfileButton = document.querySelector('#user-profile button');
 
 // To load all events 
+window.onload = function(){
+  const homePageLinkNavbar = location.href;
+  document.querySelector('nav ul li:first-child').setAttribute('href', homePageLinkNavbar); 
+}
 loadAllEvents();
+loadSkills();
+loadHobbies();
 function loadAllEvents(){
 
   userProfileButton.addEventListener('click', (event)=>{
@@ -53,13 +59,16 @@ function loadAllEvents(){
       skills: []
     }
     // Converting HTML collection into arrays 
+    console.log(skillNameCollection, skillProficiencyCollection); 
     let skillName = [], skillProficiency = [];
     Array.from(skillNameCollection).forEach((name)=>{
-      skillName.push(name.value);
+      if(name.value !== ''){
+        skillName.push(name.value);
+      }
     })
     Array.from(skillProficiencyCollection).forEach((proficiency)=>{
       if(Number(proficiency.value) !== 0){
-        skillProficiency.push(Number(proficiency.value));
+        skillProficiency.push(Number((proficiency.value/10) * 100));
       }
     })
     // Adding the skill name and the associated proficiency to updateProfile
@@ -84,14 +93,46 @@ function loadAllEvents(){
       body: JSON.stringify(updateProfile)
     })
     .then((response)=> response.text())
-    .then((text)=> console.log(text));
+    .then((text)=> {
+      console.log(text);
+      document.location.reload();
+    });
+    
 
     document.querySelector('#user-profile-wrapper').style.display = 'none';
     event.preventDefault();
   })
 }
 
-
+function loadSkills(){
+  const skillsSection = document.querySelector('#skills');
+  fetch(`${location.href}/skills`)
+  .then((response)=> response.json())
+  .then((skills)=>{
+    skills.forEach((skill)=>{
+      skillsSection.innerHTML += `
+      <div class="mb-3">
+      <p class="font-bold mb-2">${skill.skill}</p>
+        <div class="bg-slate-700 h-3 rounded">
+          <div style="width: ${skill.proficiency}%; height: 100%" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500  rounded"></div>
+        </div>
+      </div>
+      `
+    })
+  });
+}
+function loadHobbies(){
+  const hobbiesSection = document.querySelector('#about-me div:last-child ul');
+  fetch(`${location.href}/hobbies`)
+  .then((response) => response.json())
+  .then((hobbies)=>{
+    hobbies.forEach((hobby)=>{
+      hobbiesSection.innerHTML += `
+      <li class="p-2"><i class="fas fa-angle-right mr-1"></i>${hobby.hobby}</li>
+      `
+    })
+  })
+}
 
 
 

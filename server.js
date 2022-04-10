@@ -1,3 +1,4 @@
+const { json } = require('body-parser');
 const { getUsername, getEmailId } = require('./functions');
 
 require('dotenv').config();
@@ -60,7 +61,18 @@ app.get('/', (req, res)=> {
   res.redirect('/login');
 })
 app.get('/:username/home', (req, res)=>{
-  res.render('home');
+  const userEmail = getEmailId(req.params.username);
+  User.findOne({'loginInfo.email': userEmail}, (err, foundUser)=>{
+    if(!err){
+      console.log(String(foundUser._id));
+      res.render('home', {
+        name: foundUser.userInfo.name, 
+        aboutMe: foundUser.userInfo.description,
+        hobbies: foundUser.userInfo.hobbies, 
+        userId: String(foundUser._id)
+      });
+    }
+  })
 })
 app.get('/login', (req, res)=>{
   res.render('login', {message: null});
@@ -70,6 +82,24 @@ app.get('/register', (req, res)=>{
 })
 app.get('/events', (req, res)=>{
   res.render('events');
+})
+app.get('/:username/home/skills', (req, res)=>{
+  const userEmail = getEmailId(req.params.username);
+  User.findOne({'loginInfo.email': userEmail}, (err, foundUser)=>{
+    if(!err){
+      res.json(foundUser.userInfo.skills);
+      console.log("The skills should've been successfully sent back to the client")
+    }
+  })
+})
+app.get('/:username/home/hobbies', (req, res)=>{
+  const userEmail = getEmailId(req.params.username);
+  User.findOne({'loginInfo.email': userEmail}, (err, foundUser)=>{
+    if(!err){
+      res.json(foundUser.userInfo.hobbies);
+      console.log("The hobbies should've been successfully sent back to the client")
+    }
+  })
 })
 
 // POSTS Requests
@@ -143,10 +173,8 @@ app.post('/login', (req, res)=>{
   })
 })
 app.post('/:username/home/updateProfile', (req, res)=> {
+  console.log(req.body);
   const updateProfile = {
-    firstName: req.body.firstName, 
-    lastName: req.body.lastName, 
-    aboutMe: req.body.aboutMe,
     hobbies: [], 
     skills: req.body.skills
   }
@@ -157,36 +185,72 @@ app.post('/:username/home/updateProfile', (req, res)=> {
 
   // Convert username from url into email id
   const userEmail = functions.getEmailId(req.params.username);
-  // Update Name and Description fields
-  User.findOneAndUpdate({"loginInfo.email": userEmail}, {
-    $set: {
-      "userInfo.name.firstName": updateProfile.firstName, 
-      "userInfo.name.lastName": updateProfile.lastName, 
-      "userInfo.description": updateProfile.aboutMe
-    }
-  }, (err)=>{
-    if(!err){
-      console.log('Name and description successfully updated');
-    }
-  })
-  // Update Skills Field
-  updateProfile.skills.forEach((skill)=>{
-    User.findOneAndUpdate({"loginInfo.email": userEmail}, {$push: {"userInfo.skills": skill}}, (err)=>{
-      if(err){
-        console.log(err);
+
+  // Update Name 
+  if(req.body.firstName !== '' && req.body.lastName !== ''){
+    User.findOneAndUpdate({"loginInfo.email": userEmail}, {
+      $set: {
+        "userInfo.name.firstName": req.body.firstName, 
+        "userInfo.name.lastName": req.body.lastName, 
+      }
+    }, (err)=>{
+      if(!err){
+        console.log('Name and description successfully updated');
       }
     })
-  })
-  // Update Hobbies Field
-  updateProfile.hobbies.forEach((hobby)=>{
-    object = {
-      hobby: hobby
-    }
-    User.findOneAndUpdate({"loginInfo.email": userEmail}, {$push: {"userInfo.hobbies": object}}, (err)=>{
-      console.log(err);
+  }
+  else if((req.body.firstName !== '' && req.body.lastName === '') || (req.body.firstName === '' && req.body.lastName !== '')){
+    console.log('Both first and last name required');
+  }
+
+  // Update description 
+  if(req.body.aboutMe != ''){
+    User.findOneAndUpdate({"loginInfo.email": userEmail}, {
+      $set: {
+        "userInfo.description": req.body.aboutMe
+      }
+    }, (err)=>{
+      if(!err){
+        console.log('The description was successfully updated');
+      }
     })
+  }
+  
+  // Check if skill is already present or not
+  User.findOne({"loginInfo.email": userEmail}, (err, foundUser)=>{
+    if(!err){
+      if(req.body.skills.length !== 0){
+        updateProfile.skills.forEach((skill)=>{
+          const result = functions.isSkillPresent(skill.skill, foundUser.userInfo.skills);
+          if(result === false){
+            foundUser.userInfo.skills.push({
+              skill: skill.skill, 
+              proficiency: skill.proficiency
+            })
+            console.log(skill.skill + " successfully added");
+          }
+        })
+        foundUser.save();
+      }
+    }
   })
-  res.status(200).send('Name, description, hobbies and skills are updated');
+
+  // Check if the hobbies are already present or not
+  User.findOne({"loginInfo.email": userEmail}, (err, foundUser)=>{
+    if(!err){
+      updateProfile.hobbies.forEach((hobby)=>{
+        if(hobby !== ''){
+          const result = functions.isHobbyPresent(hobby, foundUser.userInfo.hobbies); 
+          if(result === false){
+            foundUser.userInfo.hobbies.push({hobby: hobby});
+            console.log(hobby + ' is successfully added');
+          }
+        }
+      })
+      foundUser.save();
+    }
+  })
+  res.status(200).send();
 })
 
 app.listen('3000', ()=>{

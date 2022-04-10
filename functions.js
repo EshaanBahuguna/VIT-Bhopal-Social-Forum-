@@ -27,3 +27,23 @@ exports.getEmailId = function(username){
     userEmail += '@vitbhopal.ac.in';
     return userEmail;
 }
+
+exports.isHobbyPresent = function(hobby, hobbiesDB){
+    let result = false;
+    for(let i = 0; i < hobbiesDB.length; i++){
+        if(hobby.toLowerCase() === hobbiesDB[i].hobby.toLowerCase()){
+          return true;
+        }
+      }
+      return result; 
+}
+
+exports.isSkillPresent = function(skill, skillsDB){
+    let result = false; 
+    for(let i = 0; i < skillsDB.length; i++){
+        if(skill.toLowerCase() === skillsDB[i].skill.toLowerCase()){
+          return true;
+        }
+      }
+      return result; 
+}
