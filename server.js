@@ -7,7 +7,9 @@ const express = require('express'),
       bodyParser = require('body-parser'), 
       mongoose = require('mongoose'), 
       bcrypt = require('bcrypt'), 
-      functions = require('./functions');
+      functions = require('./functions'), 
+      Filter = require('bad-words'), 
+      filter = new Filter();
 const saltRounds = 10;
 
 app.set('view engine' , 'ejs');
@@ -265,6 +267,31 @@ app.post('/contact', (req, res)=>{
   })
   newContact.save();
   res.send('The Contact Form details were succesfully submitted');
+})
+app.post('/:username/home/makePost', (req, res)=>{  
+  // Check for profanity in title
+  const isTitleProfane = filter.isProfane(req.body.title); 
+  // Check for profanity in body
+  const isBodyProfane = filter.isProfane(req.body.body);
+  
+  // Store post in DB
+  if(isTitleProfane === false && isBodyProfane === false){
+    User.findByIdAndUpdate(req.body.userId, {$push: {userPosts: {
+      postTitle: req.body.title, 
+      postBody: req.body.body
+    }}}, (err)=>{
+      if(!err){
+        console.log('The Post was successfully stored in DB');
+      }
+    })
+  }
+
+  res.json({
+    isTitleProfane: isTitleProfane, 
+    isBodyProfane: isBodyProfane, 
+    cleanTitle: filter.clean(req.body.title), 
+    cleanBody: filter.clean(req.body.body), 
+  })
 })
 
 app.listen('3000', ()=>{

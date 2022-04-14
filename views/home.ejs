@@ -31,16 +31,19 @@
       <!-- Section to make Posts -->
       <section id="make-post" class="px-20">
         <div class="card">
-          <form action="" method="post" class="divide-y mt-3 mb-0">
+          <div class="divide-y mt-3 mb-0">
             <div class="pl-2 pt-2">
               <input type="text" name="title" id="title" placeholder="Title" class="mb-2 pl-1" style="width: 100%; background-color: #2a2a2a">
               <textarea name="body" id="body" placeholder="Write a description..." style="width: 100%; min-height: 6.2rem; resize: none; background-color: #2a2a2a" class="pl-1"></textarea>
-              <input type="hidden" name="userName" value="Eshaan Bahuguna">
+              <input type="hidden" name="userId" value="<%= userId %>">
             </div>
             <div class="p-2 pl-0">
               <button type="submit" class="primary-button">Post</button>
+              <div id="make-post-output" class="inline-block ml-10 font-mono italic">
+                <!-- output for post Submit -->
+              </div>
             </div>
-          </form>
+          </div>
         </div>
       </section>
   
@@ -162,6 +165,6 @@
     <div class="hidden" id="user-id">
       <%= userId %>
     </div>
-    <script src="/app.js"></script>
   </div>
+  <script src="/app.js"></script>
 <%- include("./partials/footer"); -%>

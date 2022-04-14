@@ -1,7 +1,8 @@
 const userProfileButton = document.querySelector('#user-profile-button'), 
       userProfileCancelButton = document.querySelector('#user-profile > i')
       addSkillButton = document.querySelector('#add-skill-button'), 
-      updateProfileButton = document.querySelector('#user-profile button');
+      updateProfileButton = document.querySelector('#user-profile button'), 
+      makePostButton = document.querySelector('#make-post button');
 
 // To load all events 
 window.onload = function(){
@@ -100,6 +101,57 @@ function loadAllEvents(){
     
 
     document.querySelector('#user-profile-wrapper').style.display = 'none';
+    event.preventDefault();
+  })
+
+  makePostButton.addEventListener('click', (event)=>{
+    const title = document.querySelector('#make-post input[type="text"]'), 
+          body = document.querySelector('#make-post textarea'), 
+          userId = document.querySelector('#make-post input[type="hidden"]').value, 
+          makePostOutput = document.querySelector('#make-post-output'); 
+    
+    if(title !== '' && body !== ''){
+      fetch(`${location.href}/makePost`, {
+        method: 'POST', 
+        headers: {'Content-Type': 'application/json'}, 
+        body: JSON.stringify({
+          title: title.value, 
+          body: body.value, 
+          userId: userId
+        })
+      })
+      .then((serverResponse)=> serverResponse.json())
+      .then((response)=> {
+        let output;
+        if(response.isTitleProfane === false && response.isBodyProfane === false){
+          makePostOutput.style.color = 'lightgreen'; 
+          output = 'Post was successfully submitted'; 
+        }
+        if(response.isTitleProfane === true || response.isBodyProfane === true){
+          makePostOutput.style.color = 'red'; 
+          if(response.isTitleProfane === true){
+            title.value = response.cleanTitle; 
+            output = 'Profane words found in title';
+          }
+          if(response.isBodyProfane === true){
+            body.value = response.cleanBody; 
+            output = 'Profane words found in body'; 
+          }
+          if(response.isTitleProfane === true && response.isBodyProfane === true){
+            output = 'Profane words found in body and title';
+          }
+        }
+        makePostOutput.innerText = output;
+      })
+    }
+    else{
+      makePostOutput.style.color = 'red';
+      makePostOutput.innerText = 'Title or Body of Post is Empty';
+    }
+    setTimeout(()=>{
+      makePostOutput.innerText = ''; 
+    }, 2500)
+
     event.preventDefault();
   })
 }
