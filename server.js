@@ -293,6 +293,20 @@ app.post('/:username/home/makePost', (req, res)=>{
     cleanBody: filter.clean(req.body.body), 
   })
 })
+app.post('/:username/home/deleteHobby', (req, res)=>{
+  const hobby = req.body.hobby.trim(), 
+        userEmail = functions.getEmailId(req.params.username); 
+  
+  User.findOneAndUpdate({"loginInfo.email": userEmail}, {$pull: {"userInfo.hobbies": {hobby: hobby}}},  (err)=>{
+    if(!err){
+      res.json({hobbyDeleted: true});
+      console.log(hobby + ' was successfully deleted from the database');
+    }
+    else{
+      console.log(err);
+    }
+  })
+})
 
 app.listen('3000', ()=>{
   console.log('The server is running on port 3000');

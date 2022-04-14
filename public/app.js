@@ -2,7 +2,9 @@ const userProfileButton = document.querySelector('#user-profile-button'),
       userProfileCancelButton = document.querySelector('#user-profile > i')
       addSkillButton = document.querySelector('#add-skill-button'), 
       updateProfileButton = document.querySelector('#user-profile button'), 
-      makePostButton = document.querySelector('#make-post button');
+      makePostButton = document.querySelector('#make-post button'), 
+      deleteSkillsButton = document.querySelector('#delete-skill-button'), 
+      deleteHobbiesButton = document.querySelector('#delete-hobbies-button');
 
 // To load all events 
 window.onload = function(){
@@ -37,7 +39,7 @@ function loadAllEvents(){
     `;
 
     const userSkillsSection = document.querySelector('#user-skills-section');
-    userSkillsSection.insertBefore(div, event.target);
+    userSkillsSection.insertBefore(div, event.target.parentElement);
 
     event.preventDefault();
   })
@@ -154,6 +156,39 @@ function loadAllEvents(){
 
     event.preventDefault();
   })
+
+  deleteHobbiesButton.addEventListener('click', (event)=>{
+    fetch(`${location.href}/hobbies`)
+    .then((response)=> response.json())
+    .then((hobbies)=> {
+      const allHobbiesSection = document.querySelector('#all-hobbies ul');
+      hobbies.forEach((hobby)=>{
+        allHobbiesSection.innerHTML += `
+        <li class="p-2">${hobby.hobby} <i class="fas fa-trash-alt hover:text-violet-500 ml-10 hover:cursor-pointer delete-hobby"></i></li>
+        `
+      })
+      allHobbiesSection.parentElement.style.display = 'block';
+      
+      const deleteHobby = document.getElementsByClassName('delete-hobby'); 
+      Array.from(deleteHobby).forEach((button)=>{
+        button.addEventListener('click', (e)=>{
+          fetch(`${location.href}/deleteHobby`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'}, 
+            body: JSON.stringify({hobby: e.target.parentElement.innerText}) 
+          })
+          .then((response)=> response.json())
+          .then((result)=> {
+            if(result.hobbyDeleted === true){
+              e.target.parentElement.style.textDecoration = 'line-through';
+              loadHobbies();
+            }
+          })
+        })
+      })
+    })
+    event.preventDefault();
+  })
 }
 
 function loadSkills(){
@@ -175,6 +210,7 @@ function loadSkills(){
 }
 function loadHobbies(){
   const hobbiesSection = document.querySelector('#about-me div:last-child ul');
+  hobbiesSection.innerHTML = ``;
   fetch(`${location.href}/hobbies`)
   .then((response) => response.json())
   .then((hobbies)=>{

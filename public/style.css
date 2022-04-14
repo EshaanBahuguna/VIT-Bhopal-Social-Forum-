@@ -547,8 +547,8 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-top: 1.5rem;
 }
 
-.ml-40 {
-  margin-left: 10rem;
+.ml-60 {
+  margin-left: 15rem;
 }
 
 .mt-7 {
@@ -569,6 +569,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .mb-0 {
   margin-bottom: 0px;
+}
+
+.ml-10 {
+  margin-left: 2.5rem;
 }
 
 .ml-1 {
@@ -597,14 +601,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .mt-20 {
   margin-top: 5rem;
-}
-
-.ml-60 {
-  margin-left: 15rem;
-}
-
-.ml-10 {
-  margin-left: 2.5rem;
 }
 
 .block {
@@ -735,6 +731,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   border-bottom-width: 4px;
 }
 
+.border-t-2 {
+  border-top-width: 2px;
+}
+
 .border-gray-500 {
   --tw-border-opacity: 1;
   border-color: rgb(107 114 128 / var(--tw-border-opacity));
@@ -748,6 +748,11 @@ Ensure the default browser behavior of the `hidden` attribute.
 .border-b-violet-500 {
   --tw-border-opacity: 1;
   border-bottom-color: rgb(139 92 246 / var(--tw-border-opacity));
+}
+
+.border-t-slate-500 {
+  --tw-border-opacity: 1;
+  border-top-color: rgb(100 116 139 / var(--tw-border-opacity));
 }
 
 .bg-gradient-to-r {
@@ -1097,7 +1102,7 @@ form textarea::placeholder{
   background: #2a2a2a
 }
 
-#user-profile i{
+#user-profile-cancel-button{
   position: relative;
   left: 36rem;
   bottom: 1.5rem;
