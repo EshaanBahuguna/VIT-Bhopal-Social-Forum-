@@ -22,7 +22,8 @@ mongoose.connect(`mongodb+srv://${process.env.CLUSTER_USERNAME}:${process.env.CL
 const userSchema = new mongoose.Schema({ 
   loginInfo: {
     email: String, 
-    password: String
+    password: String, 
+    loginStatus: Boolean
   },
   userInfo: { 
     name: {
@@ -69,14 +70,19 @@ app.get('/', (req, res)=> {
 })
 app.get('/:username/home', (req, res)=>{
   const userEmail = getEmailId(req.params.username);
-  User.findOne({'loginInfo.email': userEmail}, (err, foundUser)=>{
+  User.findOneAndUpdate({"loginInfo.email": userEmail}, {$set: {"loginInfo.loginStatus": true}}, (err, foundUser)=>{
     if(!err){
-      res.render('home', {
-        name: foundUser.userInfo.name, 
-        aboutMe: foundUser.userInfo.description,
-        hobbies: foundUser.userInfo.hobbies, 
-        userId: String(foundUser._id)
-      });
+      if(foundUser != null){
+        res.render('home', {
+          name: foundUser.userInfo.name, 
+          aboutMe: foundUser.userInfo.description,
+          hobbies: foundUser.userInfo.hobbies, 
+          userId: String(foundUser._id)
+        });
+      }
+      else{
+        res.redirect('/login');
+      }
     }
   })
 })
@@ -107,6 +113,15 @@ app.get('/:username/home/hobbies', (req, res)=>{
     }
   })
 })
+app.get('/:username/home/logout', (req, res)=>{
+  const userEmail = functions.getEmailId(req.params.username);
+
+  User.findOneAndUpdate({"loginInfo.email": userEmail}, {$set: {"loginInfo.loginStatus": false}}, (err)=>{
+    if(!err){
+      res.redirect('/login');
+    }
+  });
+})
 
 // POSTS Requests
 app.post('/register', (req, res)=> {
@@ -126,7 +141,8 @@ app.post('/register', (req, res)=> {
             const newUser = new User({
               loginInfo: {
                 email: userEmail, 
-                password: hash
+                password: hash, 
+                loginStatus: false
               }, 
               userInfo: {
                   name: {

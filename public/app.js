@@ -4,13 +4,16 @@ const userProfileButton = document.querySelector('#user-profile-button'),
       updateProfileButton = document.querySelector('#user-profile button'), 
       makePostButton = document.querySelector('#make-post button'), 
       deleteSkillsButton = document.querySelector('#delete-skills-button'), 
-      deleteHobbiesButton = document.querySelector('#delete-hobbies-button');
+      deleteHobbiesButton = document.querySelector('#delete-hobbies-button'),
+      logOutButton = document.querySelector('#logout-button');
 
 
 // To load all events 
 window.onload = function(){
   const homePageLinkNavbar = location.href;
   document.querySelector('nav ul li:first-child').setAttribute('href', homePageLinkNavbar); 
+
+  logOutButton.setAttribute('href', `${location.href}/logout`);
 }
 loadAllEvents();
 loadSkills();
@@ -259,7 +262,7 @@ function loadHobbies(){
   .then((hobbies)=>{
     hobbies.forEach((hobby)=>{
       hobbiesSection.innerHTML += `
-      <li class="p-2"><i class="fas fa-angle-right mr-1"></i>${hobby.hobby}</li>
+      <li class="p-2"><i class="fas fa-angle-right" style="margin-right: 0.5rem"></i>${hobby.hobby}</li>
       `
     })
   })
