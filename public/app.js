@@ -3,8 +3,9 @@ const userProfileButton = document.querySelector('#user-profile-button'),
       addSkillButton = document.querySelector('#add-skill-button'), 
       updateProfileButton = document.querySelector('#user-profile button'), 
       makePostButton = document.querySelector('#make-post button'), 
-      deleteSkillsButton = document.querySelector('#delete-skill-button'), 
+      deleteSkillsButton = document.querySelector('#delete-skills-button'), 
       deleteHobbiesButton = document.querySelector('#delete-hobbies-button');
+
 
 // To load all events 
 window.onload = function(){
@@ -158,6 +159,7 @@ function loadAllEvents(){
   })
 
   deleteHobbiesButton.addEventListener('click', (event)=>{
+    // Displaying all hobbies
     fetch(`${location.href}/hobbies`)
     .then((response)=> response.json())
     .then((hobbies)=> {
@@ -169,6 +171,7 @@ function loadAllEvents(){
       })
       allHobbiesSection.parentElement.style.display = 'block';
       
+      // Deleting the selected hobby from the DB
       const deleteHobby = document.getElementsByClassName('delete-hobby'); 
       Array.from(deleteHobby).forEach((button)=>{
         button.addEventListener('click', (e)=>{
@@ -189,10 +192,50 @@ function loadAllEvents(){
     })
     event.preventDefault();
   })
+
+  deleteSkillsButton.addEventListener('click', (event)=>{
+    // Displaying all Skills and their respective proficiencies
+    fetch(`${location.href}/skills`)
+    .then((response)=> response.json())
+    .then((skills)=>{
+      const allSkillsSection = document.querySelector('#all-skills ul');
+      skills.forEach((skill)=>{
+        allSkillsSection.innerHTML += `
+        <li class="p-2"><span>${skill.skill}</span> <span class="ml-10">Proficiency: ${(skill.proficiency/100)*10}</span><i class="fas fa-trash-alt hover:text-violet-500 ml-10 hover:cursor-pointer delete-skill"></i></li>
+        `
+      })
+      allSkillsSection.parentElement.style.display = 'block';
+      
+      // Deleting the selected skill from the DB
+      const deleteSkill = document.getElementsByClassName('delete-skill');
+      Array.from(deleteSkill).forEach((button)=>{
+        button.addEventListener('click', (e)=>{
+          fetch(`${location.href}/deleteSkill`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'}, 
+            body: JSON.stringify({skill: e.target.parentElement.firstChild.innerText}) 
+          })
+          .then((response)=> response.json())
+          .then((result)=> {
+            if(result.skillDeleted === true){
+              e.target.parentElement.style.textDecoration = 'line-through';
+              loadSkills();
+            }
+          })
+        })
+      })
+    })
+
+
+    event.preventDefault();
+  })
 }
 
 function loadSkills(){
   const skillsSection = document.querySelector('#skills');
+  skillsSection.innerHTML = `
+  <h3 class="mb-3 text-center">Skills</h3>
+  `;
   fetch(`${location.href}/skills`)
   .then((response)=> response.json())
   .then((skills)=>{
@@ -221,36 +264,3 @@ function loadHobbies(){
     })
   })
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const postButton = document.querySelector('#make-post button[type="submit"]');
-// postButton.addEventListener('click', (event)=>{
-//   const title = document.querySelector('#title').value, 
-//         body = document.querySelector('#body').value;
-  
-//   fetch('/home', {
-//     method: 'POST', 
-//     headers: {'Content-Type': 'application/x-www-form-urlencoded'}, 
-//     body: `title=${title}&body=${body}`
-//   })
-//   .then((response)=> response.text())
-//   .then((text)=> console.log(text))
-//   event.preventDefault();
-// })

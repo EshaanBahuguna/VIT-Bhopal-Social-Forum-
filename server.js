@@ -307,6 +307,16 @@ app.post('/:username/home/deleteHobby', (req, res)=>{
     }
   })
 })
+app.post('/:username/home/deleteSkill', (req, res)=>{
+  const userEmail = functions.getEmailId(req.params.username);
+  
+  User.findOneAndUpdate({"loginInfo.email": userEmail}, {$pull: {"userInfo.skills": {skill: req.body.skill}}}, (err)=>{
+    if(!err){
+      res.json({skillDeleted: true});
+      console.log(req.body.skill + ' was successfully deleted from the database');
+    }
+  })
+})
 
 app.listen('3000', ()=>{
   console.log('The server is running on port 3000');
