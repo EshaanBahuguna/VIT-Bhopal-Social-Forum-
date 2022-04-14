@@ -55,6 +55,11 @@ const userSchema = new mongoose.Schema({
   ]
 })
 const User = mongoose.model('User', userSchema);
+const Contact = mongoose.model('Contact', {
+  name: String, 
+  email: String, 
+  message: String
+});
 
 // GET Requests
 app.get('/', (req, res)=> {
@@ -64,7 +69,6 @@ app.get('/:username/home', (req, res)=>{
   const userEmail = getEmailId(req.params.username);
   User.findOne({'loginInfo.email': userEmail}, (err, foundUser)=>{
     if(!err){
-      console.log(String(foundUser._id));
       res.render('home', {
         name: foundUser.userInfo.name, 
         aboutMe: foundUser.userInfo.description,
@@ -88,7 +92,7 @@ app.get('/:username/home/skills', (req, res)=>{
   User.findOne({'loginInfo.email': userEmail}, (err, foundUser)=>{
     if(!err){
       res.json(foundUser.userInfo.skills);
-      console.log("The skills should've been successfully sent back to the client")
+      console.log("The skills should've been successfully sent back to the client");
     }
   })
 })
@@ -97,7 +101,7 @@ app.get('/:username/home/hobbies', (req, res)=>{
   User.findOne({'loginInfo.email': userEmail}, (err, foundUser)=>{
     if(!err){
       res.json(foundUser.userInfo.hobbies);
-      console.log("The hobbies should've been successfully sent back to the client")
+      console.log("The hobbies should've been successfully sent back to the client");
     }
   })
 })
@@ -251,6 +255,16 @@ app.post('/:username/home/updateProfile', (req, res)=> {
     }
   })
   res.status(200).send();
+})
+app.post('/contact', (req, res)=>{
+  // console.log(req.body);
+  const newContact = new Contact({
+    name: req.body.name, 
+    email: req.body.email, 
+    message: req.body.message
+  })
+  newContact.save();
+  res.send('The Contact Form details were succesfully submitted');
 })
 
 app.listen('3000', ()=>{

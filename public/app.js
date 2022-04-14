@@ -114,7 +114,7 @@ function loadSkills(){
       <div class="mb-3">
       <p class="font-bold mb-2">${skill.skill}</p>
         <div class="bg-slate-700 h-3 rounded">
-          <div style="width: ${skill.proficiency}%; height: 100%" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500  rounded"></div>
+          <div style="width: ${skill.proficiency}%; height: 0.75rem" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500  rounded"></div>
         </div>
       </div>
       `
