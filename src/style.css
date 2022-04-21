@@ -137,7 +137,7 @@ form textarea::placeholder{
 #login-page label, #register-page label{
   font-size: 1.5rem;
 }
-#login-page input, #register-page input, #contact-form input, #contact-form textarea{
+#login-page input, #register-page input, #contact-form input, #contact-form textarea, #admin-page input{
   background: #2a2a2a;
 }
 
@@ -149,3 +149,7 @@ form textarea::placeholder{
   height: 0.15rem;
 }
 
+/* ADMIN Page */
+#admin-page{
+  max-width: 100rem;
+}

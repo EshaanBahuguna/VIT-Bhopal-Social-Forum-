@@ -23,7 +23,8 @@ const userSchema = new mongoose.Schema({
   loginInfo: {
     email: String, 
     password: String, 
-    loginStatus: Boolean
+    loginStatus: Boolean, 
+    admin: Boolean
   },
   userInfo: { 
     name: {
@@ -63,6 +64,22 @@ const Contact = mongoose.model('Contact', {
   email: String, 
   message: String
 });
+const Event = mongoose.model('Event', {
+  holidays: [
+    {
+      month: String, 
+      holidayName: String, 
+      date: String
+    }
+  ], 
+  events: [
+    {
+      month: String,
+      eventName: String, 
+      date: String
+    }
+  ]
+})
 
 // GET Requests
 app.get('/', (req, res)=> {
@@ -70,9 +87,11 @@ app.get('/', (req, res)=> {
 })
 app.get('/:username/home', (req, res)=>{
   const userEmail = getEmailId(req.params.username);
+  
   User.findOneAndUpdate({"loginInfo.email": userEmail}, {$set: {"loginInfo.loginStatus": true}}, (err, foundUser)=>{
     if(!err){
-      if(foundUser != null){
+      if(foundUser != null){  
+        // Render the user home page
         res.render('home', {
           name: foundUser.userInfo.name, 
           aboutMe: foundUser.userInfo.description,
@@ -122,6 +141,12 @@ app.get('/:username/home/logout', (req, res)=>{
     }
   });
 })
+app.get('/admin', (req, res)=>{
+  res.redirect('/login');
+})
+app.get('/adminPage', (req, res)=>{
+  res.render('admin');
+})
 
 // POSTS Requests
 app.post('/register', (req, res)=> {
@@ -142,7 +167,8 @@ app.post('/register', (req, res)=> {
               loginInfo: {
                 email: userEmail, 
                 password: hash, 
-                loginStatus: false
+                loginStatus: false, 
+                admin: false
               }, 
               userInfo: {
                   name: {
@@ -178,9 +204,14 @@ app.post('/login', (req, res)=>{
         const hash = foundUser.loginInfo.password;
         bcrypt.compare(userPassword, hash, (err, result)=>{
           if(result == true){
-            // Convert userEmail to username for url
-            username = functions.getUsername(userEmail);
-            res.redirect(`/${username}/home`);
+            if(foundUser.loginInfo.admin === true){
+              res.redirect('/adminPage');
+            }
+            else{
+              // Convert userEmail to username for url
+              username = functions.getUsername(userEmail);
+              res.redirect(`/${username}/home`);
+            }
           }
           else{
             res.render('login', {message: 'Password do not match', status: 'red'});
@@ -332,6 +363,28 @@ app.post('/:username/home/deleteSkill', (req, res)=>{
       console.log(req.body.skill + ' was successfully deleted from the database');
     }
   })
+})
+app.post('/addEvent', (req, res)=>{
+  Event.findOne({}, (err, foundEvent)=>{
+    if(!err){
+      if(req.body.type === 'event'){
+        foundEvent.events.push({
+          eventName: req.body.name, 
+          month: req.body.month, 
+          date: req.body.date
+        })
+      }
+      else if(req.body.type === 'holiday'){
+        foundEvent.holidays.push({
+          holidayName: req.body.name, 
+          month: req.body.month, 
+          date: req.body.date
+        })
+      }
+      foundEvent.save();
+    }
+  })
+  res.json({success: true});
 })
 
 app.listen('3000', ()=>{

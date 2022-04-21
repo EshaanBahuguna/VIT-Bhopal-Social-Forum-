@@ -488,6 +488,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   grid-column-start: 5;
 }
 
+.col-start-4 {
+  grid-column-start: 4;
+}
+
 .col-end-2 {
   grid-column-end: 2;
 }
@@ -498,6 +502,22 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .col-end-6 {
   grid-column-end: 6;
+}
+
+.col-end-3 {
+  grid-column-end: 3;
+}
+
+.col-end-4 {
+  grid-column-end: 4;
+}
+
+.col-end-7 {
+  grid-column-end: 7;
+}
+
+.row-start-1 {
+  grid-row-start: 1;
 }
 
 .mx-auto {
@@ -513,6 +533,16 @@ Ensure the default browser behavior of the `hidden` attribute.
 .my-5 {
   margin-top: 1.25rem;
   margin-bottom: 1.25rem;
+}
+
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .mt-12 {
@@ -603,6 +633,22 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-top: 5rem;
 }
 
+.mt-10 {
+  margin-top: 2.5rem;
+}
+
+.mr-20 {
+  margin-right: 5rem;
+}
+
+.mr-10 {
+  margin-right: 2.5rem;
+}
+
+.mr-8 {
+  margin-right: 2rem;
+}
+
 .block {
   display: block;
 }
@@ -625,6 +671,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .h-60 {
   height: 15rem;
+}
+
+.h-14 {
+  height: 3.5rem;
 }
 
 .w-80 {
@@ -677,6 +727,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .grid-cols-3 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grid-cols-6 {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
 }
 
 .flex-row {
@@ -844,6 +898,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding-right: 5rem;
 }
 
+.pt-14 {
+  padding-top: 3.5rem;
+}
+
 .text-center {
   text-align: center;
 }
@@ -930,6 +988,16 @@ Ensure the default browser behavior of the `hidden` attribute.
 .text-red-500 {
   --tw-text-opacity: 1;
   color: rgb(239 68 68 / var(--tw-text-opacity));
+}
+
+.text-gray-500 {
+  --tw-text-opacity: 1;
+  color: rgb(107 114 128 / var(--tw-text-opacity));
+}
+
+.text-gray-400 {
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity));
 }
 
 .underline {
@@ -1129,7 +1197,7 @@ form textarea::placeholder{
   font-size: 1.5rem;
 }
 
-#login-page input, #register-page input, #contact-form input, #contact-form textarea{
+#login-page input, #register-page input, #contact-form input, #contact-form textarea, #admin-page input{
   background: #2a2a2a;
 }
 
@@ -1141,6 +1209,12 @@ form textarea::placeholder{
 
 #horizontal-bar{
   height: 0.15rem;
+}
+
+/* ADMIN Page */
+
+#admin-page{
+  max-width: 100rem;
 }
 
 .hover\:cursor-pointer:hover {
@@ -1175,4 +1249,3 @@ form textarea::placeholder{
   outline: 2px solid transparent;
   outline-offset: 2px;
 }
-

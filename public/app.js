@@ -116,7 +116,7 @@ function loadAllEvents(){
           userId = document.querySelector('#make-post input[type="hidden"]').value, 
           makePostOutput = document.querySelector('#make-post-output'); 
     
-    if(title !== '' && body !== ''){
+    if(title.value !== '' && body.value !== ''){
       fetch(`${location.href}/makePost`, {
         method: 'POST', 
         headers: {'Content-Type': 'application/json'}, 
@@ -137,14 +137,14 @@ function loadAllEvents(){
           makePostOutput.style.color = 'red'; 
           if(response.isTitleProfane === true){
             title.value = response.cleanTitle; 
-            output = 'Profane words found in title';
+            output = 'Profane word(s) found in title';
           }
           if(response.isBodyProfane === true){
             body.value = response.cleanBody; 
-            output = 'Profane words found in body'; 
+            output = 'Profane word(s) found in body'; 
           }
           if(response.isTitleProfane === true && response.isBodyProfane === true){
-            output = 'Profane words found in body and title';
+            output = 'Profane word(s) found in body and title';
           }
         }
         makePostOutput.innerText = output;
@@ -177,6 +177,7 @@ function loadAllEvents(){
       // Deleting the selected hobby from the DB
       const deleteHobby = document.getElementsByClassName('delete-hobby'); 
       Array.from(deleteHobby).forEach((button)=>{
+        // Adding event listener to delete button
         button.addEventListener('click', (e)=>{
           fetch(`${location.href}/deleteHobby`, {
             method: 'POST',
