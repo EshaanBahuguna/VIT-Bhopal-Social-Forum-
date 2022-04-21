@@ -179,6 +179,7 @@ function loadAllEvents(){
       Array.from(deleteHobby).forEach((button)=>{
         // Adding event listener to delete button
         button.addEventListener('click', (e)=>{
+          // Making delete hobby request
           fetch(`${location.href}/deleteHobby`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'}, 
@@ -213,7 +214,9 @@ function loadAllEvents(){
       // Deleting the selected skill from the DB
       const deleteSkill = document.getElementsByClassName('delete-skill');
       Array.from(deleteSkill).forEach((button)=>{
+        // Adding event listener to delete button
         button.addEventListener('click', (e)=>{
+          // Making delete skill request
           fetch(`${location.href}/deleteSkill`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'}, 

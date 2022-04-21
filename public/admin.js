@@ -1,9 +1,13 @@
-const addEventsButton = document.querySelector('#events-and-holidays button');
+const   addEventsButton = document.querySelector('#events-and-holidays button'), 
+        deleteEventsButton = document.querySelector('#delete-events-button'), 
+        deleteHolidaysButton = document.querySelector('#delete-holidays-button'), 
+        eventAndHolidaysSection = document.querySelector('#events-and-holidays');
 
 addEventsButton.addEventListener('click', (event)=>{
     const   name = document.querySelector('#event-name').value, 
             type = document.querySelector('input[type="radio"]:checked').value
-            date = document.querySelector('#event-date').value;
+            date = document.querySelector('#event-date').value, 
+            output = document.querySelector('#add-events-output');
 
     // Check if no field is empty
     if(name !== '' && type !== null && date !== ''){
@@ -20,14 +24,100 @@ addEventsButton.addEventListener('click', (event)=>{
         .then((response)=> response.json())
         .then((result)=> {
             if(result.success === true){
-                console.log('Event was successfully added');
+                output.innerText = 'Event was successfully added';
+                output.style.color = 'lightgreen';
             }
         })
     }
     else{
-        console.log('All fields should be filled')
+        output.innerText = 'All fields should be filled';
+        output.style.color = 'red';
     }
+    setTimeout(()=>{
+        output.innerText = '';
+    }, 2500);
 
+    event.preventDefault();
+})
 
+deleteEventsButton.addEventListener('click', (event)=>{
+    fetch('/getAllEvents')
+    .then((response)=> response.json())
+    .then((eventsDB)=>{
+        const div = document.createElement('div');
+        div.className = 'border-t-2 border-t-slate-500 mt-6 pt-3 text-center';
+        const ul = document.createElement('ul');
+        eventsDB.forEach((event)=>{
+            const li = document.createElement('li');
+            li.className = 'p-2'
+            li.innerHTML = `
+                ${event.eventName}  ${event.date}  <button class="delete-event" value="${event._id}"><i class="fas fa-times hover:text-violet-500 ml-5 hover:cursor-pointer"></i></button>
+            `;
+            ul.appendChild(li);
+        })
+        div.appendChild(ul);
+        eventAndHolidaysSection.appendChild(div);
+
+        // Adding event listener to delete event buttons
+        const deleteEvents = document.getElementsByClassName('delete-event');
+        Array.from(deleteEvents).forEach((button)=>{
+            button.addEventListener('click', (e)=>{
+                // Making delete event request
+                fetch('/deleteEvent', {
+                    method: 'POST', 
+                    headers: {'Content-Type': 'application/json'}, 
+                    body: JSON.stringify({id: e.target.parentElement.value})
+                })
+                .then((response)=> response.json())
+                .then((result)=> {
+                    if(result.eventDeleted === true){
+                        e.target.parentElement.parentElement.style.textDecoration = 'line-through';
+                    }
+                })
+                e.preventDefault();
+            })
+        })
+    })
+    event.preventDefault();
+})
+
+deleteHolidaysButton.addEventListener('click', (event)=>{
+    fetch('/getAllHolidays')
+    .then((response)=> response.json())
+    .then((holidaysDB)=>{
+        const div = document.createElement('div');
+        div.className = 'border-t-2 border-t-slate-500 mt-6 pt-3 text-center';
+        const ul = document.createElement('ul');
+        holidaysDB.forEach((holiday)=>{
+            const li = document.createElement('li');
+            li.className = 'p-2'
+            li.innerHTML = `
+                ${holiday.holidayName}  ${holiday.date}  <button class="delete-holiday" value="${holiday._id}"><i class="fas fa-times hover:text-violet-500 ml-5 hover:cursor-pointer"></i></button>
+            `;
+            ul.appendChild(li);
+        })
+        div.appendChild(ul);
+        eventAndHolidaysSection.appendChild(div);
+
+        // Adding event listener to delete event buttons
+        const deleteEvents = document.getElementsByClassName('delete-holiday');
+        Array.from(deleteEvents).forEach((button)=>{
+            // Making delete holiday request
+            button.addEventListener('click', (e)=>{
+                fetch('/deleteHoliday', {
+                    method: 'POST', 
+                    headers: {'Content-Type': 'application/json'}, 
+                    body: JSON.stringify({id: e.target.parentElement.value})
+                })
+                .then((response)=> response.json())
+                .then((result)=> {
+                    if(result.holidayDeleted === true){
+                        e.target.parentElement.parentElement.style.textDecoration = 'line-through';
+                    }
+                })
+                e.preventDefault();
+            })
+        })
+    })
     event.preventDefault();
 })

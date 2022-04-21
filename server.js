@@ -147,6 +147,20 @@ app.get('/admin', (req, res)=>{
 app.get('/adminPage', (req, res)=>{
   res.render('admin');
 })
+app.get('/getAllEvents', (req, res)=>{
+  Event.findOne({}, (err, foundEvent)=>{
+    if(!err){
+      res.json(foundEvent.events);
+    }
+  })
+})
+app.get('/getAllHolidays', (req, res)=>{
+  Event.findOne({}, (err, foundEvent)=>{
+    if(!err){
+      res.json(foundEvent.holidays);
+    }
+  })
+})
 
 // POSTS Requests
 app.post('/register', (req, res)=> {
@@ -385,6 +399,26 @@ app.post('/addEvent', (req, res)=>{
     }
   })
   res.json({success: true});
+})
+app.post('/deleteEvent', (req, res)=>{
+  Event.findOneAndUpdate({}, {$pull: {events: {_id: req.body.id}}}, (err, foundEvent)=>{
+    if(!err){
+      res.json({eventDeleted: true});
+    }
+    else{
+      console.log(err);
+    }
+  })
+})
+app.post('/deleteHoliday', (req, res)=>{
+  Event.findOneAndUpdate({}, {$pull: {holidays: {_id: req.body.id}}}, (err, foundEvent)=>{
+    if(!err){
+      res.json({holidayDeleted: true});
+    }
+    else{
+      console.log(err);
+    }
+  })
 })
 
 app.listen('3000', ()=>{
