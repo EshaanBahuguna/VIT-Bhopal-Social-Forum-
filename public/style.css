@@ -492,6 +492,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   grid-column-start: 4;
 }
 
+.col-start-3 {
+  grid-column-start: 3;
+}
+
 .col-end-2 {
   grid-column-end: 2;
 }
@@ -516,8 +520,24 @@ Ensure the default browser behavior of the `hidden` attribute.
   grid-column-end: 7;
 }
 
+.row-span-full {
+  grid-row: 1 / -1;
+}
+
 .row-start-1 {
   grid-row-start: 1;
+}
+
+.row-start-auto {
+  grid-row-start: auto;
+}
+
+.row-end-2 {
+  grid-row-end: 2;
+}
+
+.row-end-3 {
+  grid-row-end: 3;
 }
 
 .mx-auto {
@@ -641,10 +661,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-right: 5rem;
 }
 
-.mr-10 {
-  margin-right: 2.5rem;
-}
-
 .mr-8 {
   margin-right: 2rem;
 }
@@ -709,6 +725,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   max-width: 32rem;
 }
 
+.max-w-sm {
+  max-width: 24rem;
+}
+
 .cursor-pointer {
   cursor: pointer;
 }
@@ -755,6 +775,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .gap-10 {
   gap: 2.5rem;
+}
+
+.gap-12 {
+  gap: 3rem;
 }
 
 .divide-y-2 > :not([hidden]) ~ :not([hidden]) {
@@ -838,6 +862,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding: 0.75rem;
 }
 
+.p-5 {
+  padding: 1.25rem;
+}
+
 .px-64 {
   padding-left: 16rem;
   padding-right: 16rem;
@@ -900,6 +928,14 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .pt-14 {
   padding-top: 3.5rem;
+}
+
+.pt-10 {
+  padding-top: 2.5rem;
+}
+
+.pr-10 {
+  padding-right: 2.5rem;
 }
 
 .text-center {
@@ -988,11 +1024,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .text-red-500 {
   --tw-text-opacity: 1;
   color: rgb(239 68 68 / var(--tw-text-opacity));
-}
-
-.text-gray-500 {
-  --tw-text-opacity: 1;
-  color: rgb(107 114 128 / var(--tw-text-opacity));
 }
 
 .text-gray-400 {

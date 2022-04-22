@@ -161,6 +161,13 @@ app.get('/getAllHolidays', (req, res)=>{
     }
   })
 })
+app.get('/getContactCards', (req, res)=>{
+  Contact.find({}, (err, foundContacts)=>{
+    if(!err){
+      res.json({contacts: foundContacts});
+    }
+  })
+})
 
 // POSTS Requests
 app.post('/register', (req, res)=> {
@@ -417,6 +424,13 @@ app.post('/deleteHoliday', (req, res)=>{
     }
     else{
       console.log(err);
+    }
+  })
+})
+app.post('/deleteContactCard', (req, res)=>{
+  Contact.findByIdAndDelete(req.body.id, (err)=>{
+    if(!err){
+      res.json({contactDeleted: true});
     }
   })
 })

@@ -1,43 +1,44 @@
 <%- include('./partials/header'); -%>
 
-<main id="admin-page" class="mx-auto pt-14 grid grid-cols-6">
-    <section class="card col-start-1 col-end-3 flex flex-col items-center" id="user-information">
-        <i class="fas fa-users fa-4x"></i>
-        <!-- <h1 class="my-3">User Information</h1> -->
-        <ul class="mt-5">
-            <li class="font-bold text-2xl my-2">Registered Users: <span id="registered-users"></span></li>
-            <li class="font-bold text-2xl my-2">Active Users: <span id="active-users"></span></li>
-        </ul>
-    </section>
-
-    <section id="events-and-holidays" class="col-start-1 col-end-4 mt-10 card">
-       <h1 class="text-center">Add Eventes & Holidays</h1>
-       <div class="mt-10">
-           <input type="text" id="event-name" class="border-2 rounded border-gray-500 focus:outline-none focus:border-violet-500 w-80 p-2 mr-20 block" placeholder="Name of event/holiday"> 
-           <input type="text" id="event-date" class="border-2 rounded border-gray-500 focus:outline-none focus:border-violet-500 w-80 p-2 mr-8 mt-4" placeholder="date of event/holiday"> <span class="italic text-gray-400">(date month year, day)</span>
-           <div class="mt-4">
-               <input type="radio" name="type" value="event" checked> Event
-                <input type="radio" name="type" value="holiday" class="ml-5"> Holiday
-           </div>
-            <div class="flex flex-row justify-between mt-5">
-                <button class="primary-button h-14">Add</button>
-                <div>
-                    <a href="" class="block pt-2 underline text-violet-500 text-lg underline-offset-4" id="delete-events-button">Delete Events</a>
-                    <a href="" class="block mt-2 pt-2 underline text-violet-500 text-lg underline-offset-4" id="delete-holidays-button">Delete Holidays</a>
-                  </div>
+<main id="admin-page" class="mx-auto pt-14 grid grid-cols-2 gap-12">
+    <div class="col-start-1 col-end-2 pt-16">
+        <section class="card flex flex-col items-center max-w-lg" id="user-information">
+            <i class="fas fa-users fa-4x"></i>
+            <!-- <h1 class="my-3">User Information</h1> -->
+            <ul class="mt-5">
+                <li class="font-bold text-2xl my-2">Registered Users: <span id="registered-users"></span></li>
+                <li class="font-bold text-2xl my-2">Active Users: <span id="active-users"></span></li>
+            </ul>
+        </section>
+        <section id="events-and-holidays" class=" mt-10 pr-10">
+            <h1 class="text-center">Add Eventes & Holidays</h1>
+            <div class="mt-10">
+                <input type="text" id="event-name" class="border-2 rounded border-gray-500 focus:outline-none focus:border-violet-500 w-80 p-2 mr-20 block" placeholder="Name of event/holiday"> 
+                <input type="text" id="event-date" class="border-2 rounded border-gray-500 focus:outline-none focus:border-violet-500 w-80 p-2 mr-8 mt-4" placeholder="date of event/holiday"> <span class="italic text-gray-400">(date month year, day)</span>
+                <div class="mt-4">
+                    <input type="radio" name="type" value="event" checked> Event
+                     <input type="radio" name="type" value="holiday" class="ml-5"> Holiday
+                </div>
+                 <div class="flex flex-row justify-between mt-5">
+                     <button class="primary-button h-14">Add</button>
+                     <div>
+                         <a href="" class="block pt-2 underline text-violet-500 text-lg underline-offset-4" id="delete-events-button">Delete Events</a>
+                         <a href="" class="block mt-2 pt-2 underline text-violet-500 text-lg underline-offset-4" id="delete-holidays-button">Delete Holidays</a>
+                       </div>
+                 </div>
             </div>
-       </div>
-       <div id="add-events-output" class="font-mono">
-           <!-- result of adding events will be shown here -->
-       </div>
-    </section>
+            <div id="add-events-output" class="font-mono">
+                <!-- result of adding events will be shown here -->
+            </div>
+         </section>
+    </div>
 
-    <section id="display-contact-cards" class="col-start-4 col-end-7 row-start-1">
-        <h1 class="text-center">Queries/Feedbacks</h1>
-        <div>
-            <!-- all of the queries and feedbacks will be shown here -->
-        </div>
-    </section>
+    <div class="col-start-2 col-end-3" >
+        <section id="display-contact-cards">
+            <h1 class="text-center">Queries/Feedbacks</h1>
+            <!-- Queries and Feedback will be shown here -->
+        </section>
+    </div>
 </main>
 <script src="/admin.js"></script>
 </body>

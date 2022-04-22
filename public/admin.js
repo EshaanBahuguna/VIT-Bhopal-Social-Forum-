@@ -1,8 +1,10 @@
 const   addEventsButton = document.querySelector('#events-and-holidays button'), 
         deleteEventsButton = document.querySelector('#delete-events-button'), 
         deleteHolidaysButton = document.querySelector('#delete-holidays-button'), 
-        eventAndHolidaysSection = document.querySelector('#events-and-holidays');
+        eventAndHolidaysSection = document.querySelector('#events-and-holidays'), 
+        contactCardsSection = document.querySelector('#display-contact-cards');
 
+loadContactCards();
 addEventsButton.addEventListener('click', (event)=>{
     const   name = document.querySelector('#event-name').value, 
             type = document.querySelector('input[type="radio"]:checked').value
@@ -121,3 +123,46 @@ deleteHolidaysButton.addEventListener('click', (event)=>{
     })
     event.preventDefault();
 })
+
+function loadContactCards(){
+    fetch('/getContactCards')
+    .then((response)=> response.json())
+    .then((result)=> {
+        result.contacts.forEach((contact)=>{
+            const div = document.createElement('div');
+            div.className = 'card p-3 mt-3';
+            div.innerHTML = ` 
+                <div class="flex flex-row justify-between">
+                    <div>
+                        <p class="text-xs">posted by <span class="hover:underline cursor-pointer text-violet-400">${contact.name}</span></p>
+                        <p class="text-xs">Email: <span class="hover:underline cursor-pointer text-violet-400">${contact.email}</span></p>
+                    </div>
+                    <button class="delete-contact-card" value="${contact._id}"><i class="fas fa-trash-alt hover:text-violet-500 ml-5 hover:cursor-pointer"></i></button>
+                </div>
+                <p class="mt-3">${contact.message}</p>
+                
+            `;
+            contactCardsSection.appendChild(div);
+        })
+
+        // Adding event listeners to delete-contact-card buttons
+        const deleteContactCard = document.getElementsByClassName('delete-contact-card');
+        Array.from(deleteContactCard).forEach((button)=>{
+            // Making delete holiday request
+            button.addEventListener('click', (e)=>{
+                fetch('/deleteContactCard', {
+                    method: 'POST', 
+                    headers: {'Content-Type': 'application/json'}, 
+                    body: JSON.stringify({id: e.target.parentElement.value})
+                })
+                .then((response)=> response.json())
+                .then((result)=> {
+                    if(result.contactDeleted === true){
+                        e.target.parentElement.parentElement.parentElement.remove();
+                    }
+                })
+                e.preventDefault();
+            })
+        })
+    })
+}
