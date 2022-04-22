@@ -168,6 +168,20 @@ app.get('/getContactCards', (req, res)=>{
     }
   })
 })
+app.get('/getActiveAccounts', (req, res)=>{
+  User.countDocuments({"loginInfo.loginStatus": true}, (err, count)=> {
+    if(!err){
+      res.json({activeAccounts: count});
+    }
+  })
+})
+app.get('/getUserAccounts', (req, res)=>{
+  User.countDocuments({}, (err, count)=> {
+    if(!err){
+      res.json({userAccounts: count});
+    }
+  })
+})
 
 // POSTS Requests
 app.post('/register', (req, res)=> {

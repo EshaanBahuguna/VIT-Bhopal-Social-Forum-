@@ -5,6 +5,7 @@ const   addEventsButton = document.querySelector('#events-and-holidays button'),
         contactCardsSection = document.querySelector('#display-contact-cards');
 
 loadContactCards();
+loadUserInformation();
 addEventsButton.addEventListener('click', (event)=>{
     const   name = document.querySelector('#event-name').value, 
             type = document.querySelector('input[type="radio"]:checked').value
@@ -164,5 +165,18 @@ function loadContactCards(){
                 e.preventDefault();
             })
         })
+    })
+}
+
+function loadUserInformation(){
+    fetch('/getUserAccounts')
+    .then((response)=> response.json())
+    .then((result)=>{
+        document.querySelector('#registered-users').innerText = result.userAccounts;
+    })
+    fetch('/getActiveAccounts')
+    .then((response)=> response.json())
+    .then((result)=>{
+        document.querySelector('#active-users').innerText = result.activeAccounts;
     })
 }
