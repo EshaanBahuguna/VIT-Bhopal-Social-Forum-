@@ -153,3 +153,10 @@ form textarea::placeholder{
 #admin-page{
   max-width: 100rem;
 }
+/* USER POSTS Page */
+#all-user-posts{
+  max-width: 90rem;
+}
+#all-user-posts > div{
+  max-width: 40rem;
+}

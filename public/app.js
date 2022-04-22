@@ -5,14 +5,15 @@ const userProfileButton = document.querySelector('#user-profile-button'),
       makePostButton = document.querySelector('#make-post button'), 
       deleteSkillsButton = document.querySelector('#delete-skills-button'), 
       deleteHobbiesButton = document.querySelector('#delete-hobbies-button'),
-      logOutButton = document.querySelector('#logout-button');
+      logOutButton = document.querySelector('#logout-button'), 
+      userPostsButton = document.querySelector('#user-posts-button');
 
 
 // To load all events 
 window.onload = function(){
   const homePageLinkNavbar = location.href;
   document.querySelector('nav ul li:first-child').setAttribute('href', homePageLinkNavbar); 
-
+  userPostsButton.setAttribute('href', `${location.href}/posts`);
   logOutButton.setAttribute('href', `${location.href}/logout`);
 }
 loadAllEvents();

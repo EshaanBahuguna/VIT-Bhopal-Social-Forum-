@@ -141,6 +141,17 @@ app.get('/:username/home/logout', (req, res)=>{
     }
   });
 })
+app.get('/:username/home/posts', (req, res)=>{
+  res.render('posts');
+})
+app.get('/:username/home/posts/getAllPosts', (req, res)=>{
+  const userEmail = functions.getEmailId(req.params.username);
+  User.findOne({"loginInfo.email": userEmail}, (err, foundUser)=>{
+    if(!err){
+      res.json(foundUser.userPosts);
+    }
+  })
+}) 
 app.get('/admin', (req, res)=>{
   res.redirect('/login');
 })
@@ -360,7 +371,8 @@ app.post('/:username/home/makePost', (req, res)=>{
   if(isTitleProfane === false && isBodyProfane === false){
     User.findByIdAndUpdate(req.body.userId, {$push: {userPosts: {
       postTitle: req.body.title, 
-      postBody: req.body.body
+      postBody: req.body.body, 
+      likes: 0
     }}}, (err)=>{
       if(!err){
         console.log('The Post was successfully stored in DB');
@@ -373,6 +385,15 @@ app.post('/:username/home/makePost', (req, res)=>{
     isBodyProfane: isBodyProfane, 
     cleanTitle: filter.clean(req.body.title), 
     cleanBody: filter.clean(req.body.body), 
+  })
+})
+app.post('/:username/home/posts/deletePost', (req, res)=>{
+  const userEmail = functions.getEmailId(req.params.username);
+  console.log(req.body)
+  User.findOneAndUpdate({"loginInfo.email": userEmail}, {$pull: {userPosts: {_id: req.body.id}}}, (err)=>{
+    if(!err){
+      res.json({postDeleted: true});
+    }
   })
 })
 app.post('/:username/home/deleteHobby', (req, res)=>{
