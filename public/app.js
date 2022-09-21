@@ -13,12 +13,13 @@ const userProfileButton = document.querySelector('#user-profile-button'),
 window.onload = function(){
   const homePageLinkNavbar = location.href;
   document.querySelector('nav ul li:first-child').setAttribute('href', homePageLinkNavbar); 
-  userPostsButton.setAttribute('href', `${location.href}/posts`);
-  logOutButton.setAttribute('href', `${location.href}/logout`);
+  userPostsButton.setAttribute('href', `${location.href}posts`);
+  logOutButton.setAttribute('href', `${location.href}logout`);
 }
 loadAllEvents();
 loadSkills();
 loadHobbies();
+loadPosts();
 function loadAllEvents(){
 
   userProfileButton.addEventListener('click', (event)=>{
@@ -95,7 +96,7 @@ function loadAllEvents(){
     }
     
     let currentUrl = location.href;
-    fetch(`${currentUrl}/updateProfile`, {
+    fetch(`${currentUrl}updateProfile`, {
       method: 'POST', 
       headers: {'Content-Type': 'application/json'}, 
       body: JSON.stringify(updateProfile)
@@ -158,7 +159,7 @@ function loadAllEvents(){
     setTimeout(()=>{
       makePostOutput.innerText = ''; 
     }, 2500)
-
+    
     event.preventDefault();
   })
 
@@ -270,5 +271,157 @@ function loadHobbies(){
       <li class="p-2"><i class="fas fa-angle-right" style="margin-right: 0.5rem"></i>${hobby.hobby}</li>
       `
     })
+  })
+}
+function loadPosts(){
+  fetch('/getPosts')
+  .then((response) => response.json())
+  .then((posts)=> {
+    const postsSection = document.querySelector('#posts > div'), 
+          userId = document.querySelector('#user-id').innerText.trim();
+
+    // Get updated Likes and Comments number
+    posts.forEach((post)=>{
+      fetch(`/likesAndCommentsNumber/${'email=' + post.username + '&postId=' + post._id}`)
+      .then((response)=> response.json())
+      .then((data)=> {
+
+        // Get Liked Posts for the user
+        let likeClassName = 'far fa-heart'
+        fetch('/getLikedPosts/userId=' + userId)
+        .then((res) => res.json())
+        .then((likedPosts)=>{
+          likedPosts.likedPosts.forEach((likedPost)=>{
+            if(String(likedPost._id) === String(post._id)){
+              likeClassName = 'fas fa-heart'; 
+            }
+          })
+
+          // Displaying posts
+          const div = document.createElement('div');
+          div.className = 'card p-3 mt-3';
+          div.innerHTML =  `
+          <p class="text-xs">posted by <span class="hover:underline cursor-pointer text-violet-400">${post.username}</span></p>
+          <p class="post-title">${post.title}</p>
+          <p class="post-body">${post.body.substring(0, 200)}</p>
+          <ul class="flex flex-row mt-2 text-base">
+            <li class="mr-3 hover:text-violet-400 cursor-pointer"><i class="${likeClassName} like-button"></i><span class="ml-1">${data.likes}</span></li>
+            <li class="hover:text-violet-400 cursor-pointer"><i class="far fa-comment-alt comment-button"></i><span class="ml-1">${data.comments}</span></li>
+            <li class="hidden"> ${post._id} </li>
+          </ul>
+          `;
+          postsSection.insertBefore(div, document.querySelector('#posts > div > button'));
+        })
+
+      })
+    })
+
+    // Event delegation to dynamically add eventListener to Like & Reply Buttons
+    postsSection.addEventListener('click', (event)=>{
+      let postId, email;
+      if(event.target.className.indexOf('like-button') != -1 || event.target.className.indexOf('comment-button') != -1){
+        postId = event.target.parentElement.parentElement.children[2].innerText.trim();
+        email = event.target.parentElement.parentElement.parentElement.children[0].children[0].innerText;        
+      }
+      if(event.target.className.indexOf("like-button") != -1){
+        
+        console.log("Like button was clicked!");
+
+        fetch(`/likePost/email=${email}&postId=${postId}&userId=${userId}`)
+        .then((response)=> response.json())
+        .then((result)=>{
+          if(result.liked){
+            event.target.className = 'fas fa-heart like-button';
+            event.target.style.color = '#A78BFA';
+          }
+          else if(result.unliked){
+            event.target.className = 'far fa-heart like-button';
+          }
+          event.target.nextSibling.innerText = result.likedNumber;
+        })
+       
+      }
+      else if(event.target.className.indexOf("comment-button") != -1){
+        console.log('Comment button was clicked!');
+        const commentsSection = document.querySelector('#comments-section');
+
+        // Remove comments section if clicked again 
+        if(commentsSection != null){
+          commentsSection.remove();
+        }
+        else{
+          let div = document.createElement('div');
+          div.id = 'comments-section';
+          div.className = 'mt-4';
+          div.innerHTML = `
+          <textarea type="text" name="comment" placeholder="Write your Reply here" class="mt-3 mb-2 pl-1" style="width: 100%; height: 5rem; background-color: #2a2a2a; border-bottom: 3px solid #A78BFA; padding-bottom: 0.5rem; resize: none;"></textarea>
+          <div class="flex flex-row justify-between mt-2"> 
+            <div class="text-xs text-gray-400"><span>200</span>/200</div> <div><button class="primary-button relative bottom-2" id="reply-button">Submit</button></div>
+          </div> 
+          `;
+          const post = event.target.parentElement.parentElement.parentElement;
+          post.appendChild(div);
+          
+          // Appending user-comments section 
+          const userCommentsSection = document.createElement('div');
+          userCommentsSection.id = 'user-comments';
+          div.appendChild(userCommentsSection);
+
+          // Event Listener for typing replies/comments
+          div.addEventListener('keyup', (e)=>{
+            const charactersLeft = e.target.parentElement.children[1].children[0].firstChild;
+            let value = 200 - e.target.value.length;
+            charactersLeft.innerText = value;
+          })
+
+          // Load all comments 
+          loadComments(email, postId, post);
+
+          // Reply button event listener
+          document.querySelector('#reply-button').addEventListener('click', (e)=>{
+            const text = e.target.parentElement.parentElement.parentElement.firstChild.nextSibling.value;
+            if(text.length === 0){
+              alert('No text found in the reply submitted');
+            }
+            else{
+              fetch(`/makeComment/email=${email}&postId=${postId}&userId=${document.querySelector('#user-id').innerText.trim()}`, {
+                method: 'POST', 
+                headers: {'Content-Type': 'application/json'}, 
+                body: JSON.stringify({
+                  comment: text
+                })
+              })
+              .then((response)=> response.json())
+              .then((res)=>{
+                if(res.commentAdded){
+                  while(userCommentsSection.firstChild != null){
+                    userCommentsSection.firstChild.remove();
+                  }
+                  loadComments(email, postId, post);
+                }
+              })
+            }
+          })
+        }
+      }
+    })
+  })
+}
+
+function loadComments(email, postId, post){
+  fetch(`/getComments/email=${email}&postId=${postId}`)
+  .then((response)=> response.json())
+  .then((comments)=>{
+    if(comments.length > 0){
+      comments.forEach((comment)=>{
+        const div = document.createElement('div');
+        div.className = 'my-3 bg-zinc-900 p-3 rounded';
+        div.innerHTML = `
+            <p class="text-xs mb-1"><span class="hover:underline cursor-pointer text-violet-400">${comment.username}</span></p>
+            <p class="text-sm indent-1"> ${comment.comment} </p>
+        `;
+        document.querySelector('#user-comments').appendChild(div);
+      })
+    }
   })
 }

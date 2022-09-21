@@ -121,6 +121,14 @@ form textarea::placeholder{
   bottom: 1.5rem;
 }
 
+/* Post Section */
+.like-button, .comment-button{
+  color: #A78BFA;
+}
+#posts ul li{
+  color: #A78BFA;
+}
+
 /* FOOTER section */
 #contact-section{
   display: grid;

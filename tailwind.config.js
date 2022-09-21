@@ -8,7 +8,9 @@ module.exports = {
     './views/register.ejs', 
     './views/events.ejs', 
     './views/admin.ejs', 
-    './views/posts.ejs'
+    './views/posts.ejs', 
+    './views/materials.ejs', 
+    './public/app.js'
   ],
   theme: {
     extend: {},

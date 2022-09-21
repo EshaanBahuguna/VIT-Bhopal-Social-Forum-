@@ -1,4 +1,5 @@
 const { json } = require('body-parser');
+const { postcss } = require('tailwindcss');
 const { getUsername, getEmailId } = require('./functions');
 
 require('dotenv').config();
@@ -46,15 +47,22 @@ const userSchema = new mongoose.Schema({
   }, 
   userPosts: [
     {
+      id: Number, 
       postTitle: String, 
       postBody: String, 
       likes: Number, 
       comments : [
         {
-          userName: String , 
+          username: String , 
           comment: String
         }
       ]
+    }
+  ],
+  likedPosts: [
+    {
+      _id: String, 
+      username: String
     }
   ]
 })
@@ -80,8 +88,15 @@ const Event = mongoose.model('Event', {
     }
   ]
 })
+const Post = mongoose.model('Post', {
+  _id: String, 
+  title: String, 
+  body: String, 
+  username: String
+})
 
-// GET Requests
+// GET REQUESTS
+// Routes for Home page
 app.get('/', (req, res)=> {
   res.redirect('/login');
 })
@@ -152,6 +167,126 @@ app.get('/:username/home/posts/getAllPosts', (req, res)=>{
     }
   })
 }) 
+app.get('/getPosts', (req, res)=>{
+  Post.find({}, (err, allPosts)=>{
+    res.send(allPosts);
+    console.log("All Posts made by the users should've been successfully sent back to the client");
+  })
+})
+app.get('/getLikedPosts/userId=:userId', (req, res)=>{
+  User.findById({_id: req.params.userId}, (err, foundUser)=>{
+    if(!err){
+      res.json({
+        likedPosts: foundUser.likedPosts
+      })
+    }
+  })
+})
+app.get('/likesAndCommentsNumber/email=:email&postId=:postId', (req, res)=>{
+   User.findOne({'loginInfo.email': req.params.email}, (err, foundUser)=>{
+    if(!err){
+      foundUser.userPosts.forEach((post)=>{
+        if(String(post._id) === String(req.params.postId)){
+          res.json({
+            likes: post.likes, 
+            comments: post.comments.length
+          })
+        }
+      })
+    }
+   })
+})
+app.get('/getComments/email=:email&postId=:postId', (req, res)=>{
+  User.findOne({"loginInfo.email": req.params.email}, (err, foundUser)=>{
+    if(!err){
+      foundUser.userPosts.forEach((post)=>{
+        if(String(req.params.postId) == String(post._id)){
+          res.json(post.comments);
+        }
+      })
+    }
+  })
+})
+app.get('/likePost/email=:email&postId=:postId&userId=:userId', (req, res)=>{
+  
+  // Check whether the post has been liked or not
+  User.findById(req.params.userId.trim(), (err, foundUser)=>{
+    if(!err){
+      let postFound = false, posPost;
+      for(let i = 0; i < foundUser.likedPosts.length; i++){
+        if(foundUser.likedPosts[i].username === req.params.email && String(foundUser.likedPosts[i]._id) === String(req.params.postId)){
+          postFound = true;
+          posPost = i;
+          break;
+        }
+      }
+      
+      if(foundUser.likedPosts.length === 0 || !postFound){
+        // Add the details of the newly liked post to the likedPost field of the user who has liked the post
+        const newLikedPost = {
+          username: req.params.email, 
+          _id: req.params.postId
+        }
+        foundUser.likedPosts.push(newLikedPost);
+        foundUser.save((err)=>{
+          if(!err){
+            console.log('likedPost added to DB');
+
+            // Increment the value for the User whose post was liked
+            User.findOne({"loginInfo.email": req.params.email}, (err, foundUser2)=>{
+              for(let i = 0; i < foundUser2.userPosts.length; i++){
+                if(String(foundUser2.userPosts[i]._id) === String(req.params.postId)){
+                  foundUser2.userPosts[i].likes += 1;
+                  foundUser2.save((err, updatedDetails)=>{
+                    if(!err){
+                      console.log(`${req.params.postId} of ${req.params.email} has been liked`);
+                      res.json({
+                        liked: true,
+                        likedNumber: updatedDetails.userPosts[i].likes,
+                        unliked: false
+                      })
+                    }
+                  })
+                  break;
+                }
+              }
+            })
+          }
+        })
+      }
+      else if(postFound){
+        // Remove the post from likedPosts who has unliked the post
+        User.findByIdAndUpdate(req.params.userId.trim(), {$pull: {likedPosts: {_id: req.params.postId}}}, (err)=>{
+          if(!err){
+            console.log("post removed from likedPost DB");
+          }
+        })
+
+        // Reduce the value of liked number from the person's post that got disliked
+        User.findOne({"loginInfo.email": req.params.email}, (err, foundUser2)=>{
+          for(let i = 0; i < foundUser2.userPosts.length; i++){
+            if(String(req.params.postId) === String(foundUser2.userPosts[i]._id)){
+              foundUser2.userPosts[i].likes -= 1;
+              foundUser2.save((err, updatedDetails)=>{
+                if(!err){
+                  console.log(`${req.params.postId} of ${req.params.email} has been disliked`);
+                  res.json({
+                    liked: false,
+                    likedNumber: updatedDetails.userPosts[i].likes,
+                    unliked: true
+                  })
+                }
+              })
+              break;
+            }
+          }
+        })
+      }
+    }
+  })
+})
+
+// Routes for Admin page
 app.get('/admin', (req, res)=>{
   res.redirect('/login');
 })
@@ -194,8 +329,15 @@ app.get('/getUserAccounts', (req, res)=>{
   })
 })
 
+// Routes for Materials page
+app.get('/materials', (req, res)=>{
+  res.render('materials');
+})
+
+
 // POSTS Requests
-app.post('/register', (req, res)=> {
+// Routes for login & Registration Page
+app.post('/register', (req, res)=> {  
   console.log(req.body);
   const userEmail = req.body.userEmail, 
         userPassword = req.body.userPassword,
@@ -271,6 +413,8 @@ app.post('/login', (req, res)=>{
     }
   })
 })
+
+// Routes for Home Page
 app.post('/:username/home/updateProfile', (req, res)=> {
   console.log(req.body);
   const updateProfile = {
@@ -366,16 +510,33 @@ app.post('/:username/home/makePost', (req, res)=>{
   const isTitleProfane = filter.isProfane(req.body.title); 
   // Check for profanity in body
   const isBodyProfane = filter.isProfane(req.body.body);
-  
   // Store post in DB
   if(isTitleProfane === false && isBodyProfane === false){
-    User.findByIdAndUpdate(req.body.userId, {$push: {userPosts: {
-      postTitle: req.body.title, 
-      postBody: req.body.body, 
-      likes: 0
-    }}}, (err)=>{
+    User.findById(req.body.userId, (err, foundUser)=>{
       if(!err){
-        console.log('The Post was successfully stored in DB');
+        const idForNewPost = foundUser.userPosts.length + 1;
+        const newPost = {
+          id: idForNewPost, 
+          postTitle: req.body.title, 
+          postBody: req.body.body, 
+          likes: 0
+        }
+        foundUser.userPosts.push(newPost);
+        foundUser.save((err, updatedDetails)=>{
+          // Saving the Post made to the POST collection with its id
+          if(!err){
+            console.log("The post was successfully in the DB");
+            const postAdded = updatedDetails.userPosts[updatedDetails.userPosts.length-1];
+            const post = new Post({
+              _id: postAdded._id, 
+              title: postAdded.postTitle, 
+              body: postAdded.postBody,
+              username: updatedDetails.loginInfo.email 
+            })
+            post.save();
+            console.log('The new post was added to the POST Collection');
+          }
+        });
       }
     })
   }
@@ -420,6 +581,40 @@ app.post('/:username/home/deleteSkill', (req, res)=>{
     }
   })
 })
+app.post('/makeComment/email=:email&postId=:postId&userId=:userId', (req, res)=>{
+  let username;
+  // console.log(req.params, req.body);
+  User.findById(req.params.userId, (err, foundUser)=>{
+    if(!err){
+      username = foundUser.loginInfo.email;
+    }
+  })
+  User.findOne({"loginInfo.email": req.params.email}, (err, foundUser)=>{
+    if(!err){
+      let posts = foundUser.userPosts;
+      for(let i = 0; i < posts.length; i++){
+        if(String(posts[i]._id) === String(req.params.postId)){
+          posts[i].comments.push({
+            username: username, 
+            comment: req.body.comment
+          });
+          
+          foundUser.save((err)=>{
+            if(!err){
+              console.log('Comment added to post' + req.params.postId);
+              res.json({
+                commentAdded: true
+              })
+            }
+          })
+          break;
+        }
+      }
+    }
+  })
+})
+
+// Routes for Admin Page
 app.post('/addEvent', (req, res)=>{
   Event.findOne({}, (err, foundEvent)=>{
     if(!err){
@@ -473,3 +668,4 @@ app.post('/deleteContactCard', (req, res)=>{
 app.listen('3000', ()=>{
   console.log('The server is running on port 3000');
 })
+
