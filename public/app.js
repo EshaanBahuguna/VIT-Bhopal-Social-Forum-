@@ -1,29 +1,34 @@
 const userProfileButton = document.querySelector('#user-profile-button'), 
       userProfileCancelButton = document.querySelector('#user-profile > i')
       addSkillButton = document.querySelector('#add-skill-button'), 
-      updateProfileButton = document.querySelector('#user-profile button'), 
+      updateProfileButton = document.querySelector('#user-profile button.primary-button'), 
       makePostButton = document.querySelector('#make-post button'), 
       deleteSkillsButton = document.querySelector('#delete-skills-button'), 
       deleteHobbiesButton = document.querySelector('#delete-hobbies-button'),
       logOutButton = document.querySelector('#logout-button'), 
-      userPostsButton = document.querySelector('#user-posts-button');
-
+      userPostsButton = document.querySelector('#user-posts-button'),
+      userId = document.querySelector('#user-id').innerText.trim(), 
+      uploadImageButton = document.querySelector('#user-profile > div > form > button');
 
 // To load all events 
 window.onload = function(){
   const homePageLinkNavbar = location.href;
   document.querySelector('nav ul li:first-child').setAttribute('href', homePageLinkNavbar); 
-  userPostsButton.setAttribute('href', `${location.href}posts`);
-  logOutButton.setAttribute('href', `${location.href}logout`);
+  userPostsButton.setAttribute('href', `${location.href}/posts`);
+  logOutButton.setAttribute('href', `${location.href}/logout`);
 }
 loadAllEvents();
 loadSkills();
 loadHobbies();
 loadPosts();
+loadProfilePhoto();
 function loadAllEvents(){
 
   userProfileButton.addEventListener('click', (event)=>{
     document.querySelector('#user-profile-wrapper').style.display = 'block';
+    const userPicture = document.querySelector('#user-picture img');
+    const img = document.querySelector('#user-profile > div > img');
+    img.src = userPicture.src;
     event.preventDefault();
   })
 
@@ -96,7 +101,7 @@ function loadAllEvents(){
     }
     
     let currentUrl = location.href;
-    fetch(`${currentUrl}updateProfile`, {
+    fetch(`${currentUrl}/updateProfile`, {
       method: 'POST', 
       headers: {'Content-Type': 'application/json'}, 
       body: JSON.stringify(updateProfile)
@@ -238,6 +243,35 @@ function loadAllEvents(){
 
     event.preventDefault();
   })
+  uploadImageButton.addEventListener('click', (event)=>{
+    event.preventDefault();
+
+    const formData = new FormData(document.querySelector('#user-profile > div > form'));
+    fetch(`/${userId}/uploadImage`, {
+      method: 'POST', 
+      body: formData
+    })
+    .then(response => response.json())
+    .then((res)=> {
+      const output = document.querySelector('#user-profile > div > p');
+
+      if(res.image !== null){
+        const img = document.querySelector('#user-profile > div > img');
+        img.src = `data:${res.type};base64, ${res.image}`;
+
+        loadProfilePhoto();
+      }
+
+      output.innerText = res.text;
+      output.style.color = res.color; 
+
+      if(res.color === 'green'){
+        setTimeout(()=>{
+          output.style.display = 'none';
+        }, 3000)
+      }
+    })
+  })
 }
 
 function loadSkills(){
@@ -277,9 +311,8 @@ function loadPosts(){
   fetch('/getPosts')
   .then((response) => response.json())
   .then((posts)=> {
-    const postsSection = document.querySelector('#posts > div'), 
-          userId = document.querySelector('#user-id').innerText.trim();
-
+    const postsSection = document.querySelector('#posts > div');
+          
     // Get updated Likes and Comments number
     posts.forEach((post)=>{
       fetch(`/likesAndCommentsNumber/${'email=' + post.username + '&postId=' + post._id}`)
@@ -297,22 +330,27 @@ function loadPosts(){
             }
           })
 
-          // Displaying posts
-          const div = document.createElement('div');
-          div.className = 'card p-3 mt-3';
-          div.innerHTML =  `
-          <p class="text-xs">posted by <span class="hover:underline cursor-pointer text-violet-400">${post.username}</span></p>
-          <p class="post-title">${post.title}</p>
-          <p class="post-body">${post.body.substring(0, 200)}</p>
-          <ul class="flex flex-row mt-2 text-base">
-            <li class="mr-3 hover:text-violet-400 cursor-pointer"><i class="${likeClassName} like-button"></i><span class="ml-1">${data.likes}</span></li>
-            <li class="hover:text-violet-400 cursor-pointer"><i class="far fa-comment-alt comment-button"></i><span class="ml-1">${data.comments}</span></li>
-            <li class="hidden"> ${post._id} </li>
-          </ul>
-          `;
-          postsSection.insertBefore(div, document.querySelector('#posts > div > button'));
+          //Get Image of user whose post needs to be displayed 
+          fetch(`/${post.username}/userImage`)
+          .then(imageResponse => imageResponse.json())
+          .then((image)=>{
+            
+            // Displaying posts
+            const div = document.createElement('div');
+            div.className = 'card p-3 mt-3';
+            div.innerHTML =  `
+            <img src="data:${image.type};base64, ${image.data}" class="mr-1 mb-1 h-6 w-6 inline-block rounded-full"> <p class="text-xs inline-block mb-1">posted by <span class="hover:underline cursor-pointer text-violet-400">${post.username}</span></p>
+            <p class="post-title">${post.title}</p>
+            <p class="post-body">${post.body.substring(0, 200)}</p>
+            <ul class="flex flex-row mt-2 text-base">
+              <li class="mr-3 hover:text-violet-400 cursor-pointer"><i class="${likeClassName} like-button"></i><span class="ml-1">${data.likes}</span></li>
+              <li class="hover:text-violet-400 cursor-pointer"><i class="far fa-comment-alt comment-button"></i><span class="ml-1">${data.comments}</span></li>
+              <li class="hidden"> ${post._id} </li>
+            </ul>
+            `;
+            postsSection.insertBefore(div, document.querySelector('#posts > div > button'));
+          })
         })
-
       })
     })
 
@@ -321,7 +359,7 @@ function loadPosts(){
       let postId, email;
       if(event.target.className.indexOf('like-button') != -1 || event.target.className.indexOf('comment-button') != -1){
         postId = event.target.parentElement.parentElement.children[2].innerText.trim();
-        email = event.target.parentElement.parentElement.parentElement.children[0].children[0].innerText;        
+        email = event.target.parentElement.parentElement.parentElement.children[1].children[0].innerText;      
       }
       if(event.target.className.indexOf("like-button") != -1){
         
@@ -350,6 +388,7 @@ function loadPosts(){
           commentsSection.remove();
         }
         else{
+          // Displaying comments section
           let div = document.createElement('div');
           div.id = 'comments-section';
           div.className = 'mt-4';
@@ -377,7 +416,7 @@ function loadPosts(){
           // Load all comments 
           loadComments(email, postId, post);
 
-          // Reply button event listener
+          // Comment Submit button event listener
           document.querySelector('#reply-button').addEventListener('click', (e)=>{
             const text = e.target.parentElement.parentElement.parentElement.firstChild.nextSibling.value;
             if(text.length === 0){
@@ -414,14 +453,28 @@ function loadComments(email, postId, post){
   .then((comments)=>{
     if(comments.length > 0){
       comments.forEach((comment)=>{
-        const div = document.createElement('div');
-        div.className = 'my-3 bg-zinc-900 p-3 rounded';
-        div.innerHTML = `
-            <p class="text-xs mb-1"><span class="hover:underline cursor-pointer text-violet-400">${comment.username}</span></p>
-            <p class="text-sm indent-1"> ${comment.comment} </p>
-        `;
-        document.querySelector('#user-comments').appendChild(div);
+        fetch(`/${comment.username}/userImage`)
+        .then(imgResponse => imgResponse.json())
+        .then((image)=>{
+          const div = document.createElement('div');
+          div.className = 'my-3 bg-zinc-900 p-3 rounded';
+          div.innerHTML = `
+              <img src="data:${image.type};base64, ${image.data}" class="inline-block h-6 w-6 rounded-full"><p class="text-xs mb-1 inline-block"><span class="hover:underline cursor-pointer text-violet-400">${comment.username}</span></p>
+              <p class="text-sm indent-1"> ${comment.comment} </p>
+          `;
+          document.querySelector('#user-comments').appendChild(div);
+        })
       })
     }
+  })
+}
+
+function loadProfilePhoto(){
+  fetch(`/${userId}/profilePhoto`)
+  .then(response => response.json())
+  .then((profilePhoto)=>{
+    const userPicture = document.querySelector('#user-picture img');
+    
+    userPicture.src = `data:${profilePhoto.image.type};base64, ${profilePhoto.image.data}`;
   })
 }

@@ -10,13 +10,26 @@ const express = require('express'),
       bcrypt = require('bcrypt'), 
       functions = require('./functions'), 
       Filter = require('bad-words'), 
-      filter = new Filter();
+      filter = new Filter(),
+      fs = require('fs'), 
+      multer = require('multer');
 const saltRounds = 10;
 
 app.set('view engine' , 'ejs');
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json(['application/json']));
+
+// Multer Storage
+const upload = multer({storage: multer.memoryStorage()});
+const uploadMaterial = multer({storage: multer.diskStorage({
+  destination: (req, file, cb)=>{
+    cb(null, './subject materials');
+  },
+  filename: (req, file, cb)=>{
+    cb(null, file.originalname);
+  }
+})})
 
 // Mongoose Connection to Atlas and Schema
 mongoose.connect(`mongodb+srv://${process.env.CLUSTER_USERNAME}:${process.env.CLUSTER_PASSWORD}@cluster0.ca3lk.mongodb.net/SocialForumVITBhopal?retryWrites=true&w=majority`);
@@ -32,6 +45,8 @@ const userSchema = new mongoose.Schema({
       firstName: String, 
       lastName: String
     }, 
+    profilePhoto: Buffer, 
+    profilePhotoType: String, 
     description: String, 
     hobbies: [
       {
@@ -144,6 +159,17 @@ app.get('/:username/home/hobbies', (req, res)=>{
     if(!err){
       res.json(foundUser.userInfo.hobbies);
       console.log("The hobbies should've been successfully sent back to the client");
+    }
+  })
+})
+app.get('/:userId/profilePhoto', (req, res)=>{
+
+  User.findById(req.params.userId, (err, foundUser)=>{
+    if(!err){
+      res.json({image: {
+        data: foundUser.userInfo.profilePhoto.toString('base64'), 
+        type: foundUser.userInfo.profilePhotoType
+      }});
     }
   })
 })
@@ -285,6 +311,16 @@ app.get('/likePost/email=:email&postId=:postId&userId=:userId', (req, res)=>{
     }
   })
 })
+app.get('/:username/userImage', (req, res)=>{
+  User.findOne({"loginInfo.email": req.params.username}, (err, foundUser)=>{
+    if(!err){
+      res.json({
+        data: foundUser.userInfo.profilePhoto.toString('base64'), 
+        type: foundUser.userInfo.profilePhotoType
+      })
+    }
+  })
+})
 
 // Routes for Admin page
 app.get('/admin', (req, res)=>{
@@ -333,7 +369,22 @@ app.get('/getUserAccounts', (req, res)=>{
 app.get('/materials', (req, res)=>{
   res.render('materials');
 })
+app.get('/getMaterials', (req, res)=>{
+  fs.readdir('./subject materials/', (err, dir)=>{
+    if(!err){
+      let materialNames = [];
+      dir.forEach((name)=>{
+        materialNames.push(name.substring(0, name.length-4));
+      })
 
+      res.json(materialNames);
+    }
+  })
+})
+app.get('/getMaterials/:name', (req, res)=>{
+  console.log('./subject materials/' + req.params.name + '.zip')
+  res.download(__dirname + '/subject materials/' + req.params.name + '.zip', req.params.name + '.zip');
+})
 
 // POSTS Requests
 // Routes for login & Registration Page
@@ -351,6 +402,8 @@ app.post('/register', (req, res)=> {
         //Hashing the password
         bcrypt.hash(userPassword, saltRounds, (err, hash)=>{
           if(!err){
+            const userImage = fs.readFileSync('./public/images/user image.png');
+
             const newUser = new User({
               loginInfo: {
                 email: userEmail, 
@@ -364,6 +417,8 @@ app.post('/register', (req, res)=> {
                   lastName: '---'
                 }, 
                 description: '---', 
+                profilePhoto: userImage, 
+                profilePhotoType: 'image/png'
               }
             })
             newUser.save();
@@ -510,6 +565,7 @@ app.post('/:username/home/makePost', (req, res)=>{
   const isTitleProfane = filter.isProfane(req.body.title); 
   // Check for profanity in body
   const isBodyProfane = filter.isProfane(req.body.body);
+  
   // Store post in DB
   if(isTitleProfane === false && isBodyProfane === false){
     User.findById(req.body.userId, (err, foundUser)=>{
@@ -601,7 +657,7 @@ app.post('/makeComment/email=:email&postId=:postId&userId=:userId', (req, res)=>
           
           foundUser.save((err)=>{
             if(!err){
-              console.log('Comment added to post' + req.params.postId);
+              console.log('Comment added to post ' + req.params.postId);
               res.json({
                 commentAdded: true
               })
@@ -612,6 +668,35 @@ app.post('/makeComment/email=:email&postId=:postId&userId=:userId', (req, res)=>
       }
     }
   })
+})
+app.post('/:userId/uploadImage', upload.single('image'), (req, res)=>{
+  const imageSize = req.file.size / 1000000;
+  if(imageSize > 16){
+    res.json({
+      image: null, 
+      type: null,
+      text: 'Image size should be less than 16 MB', 
+      color: 'red'
+    })
+  }
+  else{
+    User.findById(req.params.userId, (err, foundUser)=>{
+      foundUser.userInfo.profilePhoto = req.file.buffer; 
+      foundUser.userInfo.profilePhotoType = req.file.mimetype;
+  
+      foundUser.save((err)=>{
+        if(!err){
+          console.log('Image uploaded to DB');
+          res.json({
+            image: req.file.buffer.toString('base64'), 
+            type: req.file.mimetype,
+            text: 'Image successfully uploaded', 
+            color: 'green'
+          })
+        }
+      })
+    })
+  }
 })
 
 // Routes for Admin Page
@@ -664,8 +749,14 @@ app.post('/deleteContactCard', (req, res)=>{
     }
   })
 })
+app.post('/uploadMaterial', uploadMaterial.single('file'), (req, res)=>{
+  fs.stat(`./subject materials/${req.file.originalname}`, (err, stats)=>{
+    if(!err){
+      res.send('File uploaded successfully!');
+    }
+  })
+})
 
 app.listen('3000', ()=>{
   console.log('The server is running on port 3000');
 })
-

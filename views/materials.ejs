@@ -2,11 +2,32 @@
     <%- include("./partials/navbar"); -%>
 
     <section id="materials-page" class="grid grid-cols-5 gap-10 mx-auto max-w-5xl mt-20 mb-80">
-        <div class="card inline-block text-center" ><p class="mb-3">Embedded System</p><a href="/public/materials/Embedded System/Lec 1 - Module 1.pdf" download="Embedded System" class="hover:text-violet-500"><i class="fas fa-file-download fa-2x"></i></a></div>
-        <div class="card inline-block text-center"><p class="mb-3">Software Testing</p><a href="/public/materials/SOFTWARE TESTING.zip" download="Software Testing" class="hover:text-violet-500"><i class="fas fa-file-download fa-2x"></i></a></div>
-        <div class="card inline-block text-center"><p class="mb-3">SPM</p><a href="/public/materials/SPM.zip" download="SPM" class="hover:text-violet-500"><i class="fas fa-file-download fa-2x"></i></a></div>
-        <div class="card inline-block text-center"><p class="mb-3">Soft Skills</p><a href="/public/materials/Soft Skills.zip" download="Soft Skills" class="hover:text-violet-500"><i class="fas fa-file-download fa-2x"></i></a></div>
-        <div class="card inline-block text-center"><p class="mb-3">Operating System</p><a href="/public/materials/Operating System.zip" download="Operating System" class="hover:text-violet-500"><i class="fas fa-file-download fa-2x"></i></a></div>
+        <!-- Content displayed dynamically -->
     </section>
+
+    <script>
+        window.onload = ()=>{
+            fetch('/getMaterials')
+            .then(response => response.json())
+            .then((materials)=>{
+                const materialsSection = document.querySelector('#materials-page');
+
+                materials.forEach((material)=>{
+                    materialsSection.innerHTML += `
+                    <div class="card inline-block text-center" ><p class="mb-3">${material}</p><a class="hover:text-violet-500 cursor-pointer"><i class="download-button fas fa-file-download fa-2x"></i></a></div>
+                    `;
+                })
+
+                // Event delegation for download button
+                materialsSection.addEventListener('click', (event)=>{
+                    if(event.target.className.indexOf('download-button') !== -1){
+                        console.log('download button was clicked!');
+
+                        window.open(`/getMaterials/${event.target.parentElement.parentElement.children[0].innerText}`);
+                    }
+                })
+            })
+        }
+    </script>
 
 <%- include("./partials/footer"); -%>

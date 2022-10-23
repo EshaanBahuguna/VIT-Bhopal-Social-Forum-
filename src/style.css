@@ -96,7 +96,7 @@ form textarea::placeholder{
 #user-profile{
   padding: 3rem;
   position: absolute; 
-  top: 15rem; 
+  top: 2rem; 
   left: 45rem;
 }
 #user-profile-wrapper{

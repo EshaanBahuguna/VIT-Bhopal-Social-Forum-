@@ -2,10 +2,13 @@ const   addEventsButton = document.querySelector('#events-and-holidays button'),
         deleteEventsButton = document.querySelector('#delete-events-button'), 
         deleteHolidaysButton = document.querySelector('#delete-holidays-button'), 
         eventAndHolidaysSection = document.querySelector('#events-and-holidays'), 
-        contactCardsSection = document.querySelector('#display-contact-cards');
+        contactCardsSection = document.querySelector('#display-contact-cards'), 
+        uploadButton = document.querySelector('#upload-subject-materials button');
 
 loadContactCards();
 loadUserInformation();
+
+// Event Listeners
 addEventsButton.addEventListener('click', (event)=>{
     const   name = document.querySelector('#event-name').value, 
             type = document.querySelector('input[type="radio"]:checked').value
@@ -124,7 +127,27 @@ deleteHolidaysButton.addEventListener('click', (event)=>{
     })
     event.preventDefault();
 })
+uploadButton.addEventListener('click', (event)=>{
+    event.preventDefault();
 
+    const formData = new FormData(document.querySelector('#upload-subject-materials form'));
+    fetch('/uploadMaterial', {
+        method: 'POST', 
+        body: formData
+    })
+    .then(response => response.text())
+    .then((text)=>{
+        const output = document.querySelector('#upload-materials-output');
+        output.innerText = text;
+        output.style.color = 'green';
+
+        setTimeout(()=>{
+            output.innerText = '';
+        }, 2500)
+    })
+})
+
+// Functions
 function loadContactCards(){
     fetch('/getContactCards')
     .then((response)=> response.json())
