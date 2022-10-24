@@ -6,7 +6,8 @@
     </section>
 
     <script>
-        window.onload = ()=>{
+        getMaterials();
+        function getMaterials(){
             fetch('/getMaterials')
             .then(response => response.json())
             .then((materials)=>{
@@ -29,5 +30,5 @@
             })
         }
     </script>
-
+    <script src="/page links.js"></script>
 <%- include("./partials/footer"); -%>

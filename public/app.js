@@ -5,18 +5,10 @@ const userProfileButton = document.querySelector('#user-profile-button'),
       makePostButton = document.querySelector('#make-post button'), 
       deleteSkillsButton = document.querySelector('#delete-skills-button'), 
       deleteHobbiesButton = document.querySelector('#delete-hobbies-button'),
-      logOutButton = document.querySelector('#logout-button'), 
-      userPostsButton = document.querySelector('#user-posts-button'),
       userId = document.querySelector('#user-id').innerText.trim(), 
       uploadImageButton = document.querySelector('#user-profile > div > form > button');
 
 // To load all events 
-window.onload = function(){
-  const homePageLinkNavbar = location.href;
-  document.querySelector('nav ul li:first-child').setAttribute('href', homePageLinkNavbar); 
-  userPostsButton.setAttribute('href', `${location.href}/posts`);
-  logOutButton.setAttribute('href', `${location.href}/logout`);
-}
 loadAllEvents();
 loadSkills();
 loadHobbies();
@@ -243,6 +235,7 @@ function loadAllEvents(){
 
     event.preventDefault();
   })
+
   uploadImageButton.addEventListener('click', (event)=>{
     event.preventDefault();
 
@@ -360,6 +353,7 @@ function loadPosts(){
       if(event.target.className.indexOf('like-button') != -1 || event.target.className.indexOf('comment-button') != -1){
         postId = event.target.parentElement.parentElement.children[2].innerText.trim();
         email = event.target.parentElement.parentElement.parentElement.children[1].children[0].innerText;      
+        // console.log(email, postId);
       }
       if(event.target.className.indexOf("like-button") != -1){
         
@@ -412,9 +406,14 @@ function loadPosts(){
             let value = 200 - e.target.value.length;
             charactersLeft.innerText = value;
           })
+          div.addEventListener('keydown', (e)=>{
+            if(e.target.nodeName === 'TEXTAREA' && e.target.value.length === 200){
+              e.preventDefault();
+            }
+          })
 
           // Load all comments 
-          loadComments(email, postId, post);
+          loadComments(email, postId);
 
           // Comment Submit button event listener
           document.querySelector('#reply-button').addEventListener('click', (e)=>{
@@ -423,7 +422,8 @@ function loadPosts(){
               alert('No text found in the reply submitted');
             }
             else{
-              fetch(`/makeComment/email=${email}&postId=${postId}&userId=${document.querySelector('#user-id').innerText.trim()}`, {
+              // console.log(email, postId);
+              fetch(`/makeComment/email=${email}&postId=${postId}&userId=${userId}`, {
                 method: 'POST', 
                 headers: {'Content-Type': 'application/json'}, 
                 body: JSON.stringify({
@@ -436,7 +436,7 @@ function loadPosts(){
                   while(userCommentsSection.firstChild != null){
                     userCommentsSection.firstChild.remove();
                   }
-                  loadComments(email, postId, post);
+                  loadComments(email, postId);
                 }
               })
             }
@@ -447,7 +447,8 @@ function loadPosts(){
   })
 }
 
-function loadComments(email, postId, post){
+function loadComments(email, postId){
+  // console.log(email, postId);
   fetch(`/getComments/email=${email}&postId=${postId}`)
   .then((response)=> response.json())
   .then((comments)=>{
@@ -459,7 +460,7 @@ function loadComments(email, postId, post){
           const div = document.createElement('div');
           div.className = 'my-3 bg-zinc-900 p-3 rounded';
           div.innerHTML = `
-              <img src="data:${image.type};base64, ${image.data}" class="inline-block h-6 w-6 rounded-full"><p class="text-xs mb-1 inline-block"><span class="hover:underline cursor-pointer text-violet-400">${comment.username}</span></p>
+              <img src="data:${image.type};base64, ${image.data}" class="inline-block h-6 w-6 rounded-full mr-2 mb-3"><p class="text-xs mb-1 inline-block"><span class="hover:underline cursor-pointer text-violet-400 relative bottom-1">${comment.username}</span></p>
               <p class="text-sm indent-1"> ${comment.comment} </p>
           `;
           document.querySelector('#user-comments').appendChild(div);

@@ -141,7 +141,7 @@ app.get('/login', (req, res)=>{
 app.get('/register', (req, res)=>{
   res.render('register', {reason: null, status: null});
 })
-app.get('/events', (req, res)=>{
+app.get('/:email/home/events', (req, res)=>{
   res.render('events');
 })
 app.get('/:username/home/skills', (req, res)=>{
@@ -312,6 +312,7 @@ app.get('/likePost/email=:email&postId=:postId&userId=:userId', (req, res)=>{
   })
 })
 app.get('/:username/userImage', (req, res)=>{
+  // console.log(req.params);
   User.findOne({"loginInfo.email": req.params.username}, (err, foundUser)=>{
     if(!err){
       res.json({
@@ -366,7 +367,7 @@ app.get('/getUserAccounts', (req, res)=>{
 })
 
 // Routes for Materials page
-app.get('/materials', (req, res)=>{
+app.get('/:email/home/materials', (req, res)=>{
   res.render('materials');
 })
 app.get('/getMaterials', (req, res)=>{
@@ -643,29 +644,30 @@ app.post('/makeComment/email=:email&postId=:postId&userId=:userId', (req, res)=>
   User.findById(req.params.userId, (err, foundUser)=>{
     if(!err){
       username = foundUser.loginInfo.email;
-    }
-  })
-  User.findOne({"loginInfo.email": req.params.email}, (err, foundUser)=>{
-    if(!err){
-      let posts = foundUser.userPosts;
-      for(let i = 0; i < posts.length; i++){
-        if(String(posts[i]._id) === String(req.params.postId)){
-          posts[i].comments.push({
-            username: username, 
-            comment: req.body.comment
-          });
-          
-          foundUser.save((err)=>{
-            if(!err){
-              console.log('Comment added to post ' + req.params.postId);
-              res.json({
-                commentAdded: true
+
+      User.findOne({"loginInfo.email": req.params.email}, (err, foundUser)=>{
+        if(!err){
+          let posts = foundUser.userPosts;
+          for(let i = 0; i < posts.length; i++){
+            if(String(posts[i]._id) === String(req.params.postId)){
+              posts[i].comments.push({
+                username: username, 
+                comment: req.body.comment
+              });
+              
+              foundUser.save((err)=>{
+                if(!err){
+                  console.log('Comment added to post ' + req.params.postId);
+                  res.json({
+                    commentAdded: true
+                  })
+                }
               })
+              break;
             }
-          })
-          break;
+          }
         }
-      }
+      })
     }
   })
 })

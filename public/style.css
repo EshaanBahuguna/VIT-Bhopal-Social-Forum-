@@ -480,6 +480,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   bottom: 0.5rem;
 }
 
+.bottom-1 {
+  bottom: 0.25rem;
+}
+
 .col-start-1 {
   grid-column-start: 1;
 }
@@ -638,6 +642,14 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-right: 2rem;
 }
 
+.mt-8 {
+  margin-top: 2rem;
+}
+
+.mr-48 {
+  margin-right: 12rem;
+}
+
 .ml-4 {
   margin-left: 1rem;
 }
@@ -650,32 +662,16 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-bottom: 20rem;
 }
 
-.mr-2 {
-  margin-right: 0.5rem;
+.mr-1 {
+  margin-right: 0.25rem;
 }
 
 .mb-1 {
   margin-bottom: 0.25rem;
 }
 
-.mr-1 {
-  margin-right: 0.25rem;
-}
-
-.mt-8 {
-  margin-top: 2rem;
-}
-
-.mr-5 {
-  margin-right: 1.25rem;
-}
-
-.mr-32 {
-  margin-right: 8rem;
-}
-
-.mr-48 {
-  margin-right: 12rem;
+.mr-2 {
+  margin-right: 0.5rem;
 }
 
 .block {
@@ -714,10 +710,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   height: 0.75rem;
 }
 
-.h-10 {
-  height: 2.5rem;
-}
-
 .h-6 {
   height: 1.5rem;
 }
@@ -748,10 +740,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .w-full {
   width: 100%;
-}
-
-.w-10 {
-  width: 2.5rem;
 }
 
 .w-6 {
